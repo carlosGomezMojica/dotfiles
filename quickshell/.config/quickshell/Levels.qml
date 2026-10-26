@@ -32,6 +32,9 @@ Singleton {
         sink.audio.volume = Math.max(0, Math.min(1, v))
     }
 
+    // Ajuste relativo (rueda o dos dedos sobre la cápsula)
+    function nudgeVolume(d) { setVolume(volume + d) }
+
     function toggleMute() {
         if (!sink?.audio) return
         fromUi.restart()
@@ -40,10 +43,14 @@ Singleton {
 
     // --- Brillo ---
     readonly property string backlight: "/sys/class/backlight/intel_backlight"
-    readonly property real brightness: {
+    readonly property real brightness: target >= 0 ? target : sysBrightness   // 0..1, lineal
+    readonly property real sysBrightness: {
         const max = parseInt(maxFile.text())
-        return max > 0 ? parseInt(brightnessFile.text()) / max : 0   // 0..1, lineal
+        return max > 0 ? parseInt(brightnessFile.text()) / max : 0
     }
+    // Valor pedido mientras brightnessctl lo aplica (-1 = ninguno): el porcentaje responde al instante
+    property real target: -1
+    property real sent: -1
 
     // sysfs no avisa de cambios: se recarga a mano (IPC de las teclas o tras ajustarlo aquí)
     FileView { id: maxFile; path: root.backlight + "/max_brightness" }
@@ -51,23 +58,50 @@ Singleton {
 
     function reloadBrightness() { brightnessFile.reload() }
 
+    // Deslizar con dos dedos genera muchos eventos: no se lanza un brightnessctl por cada
+    // uno; mientras hay uno en marcha solo se guarda el último valor y se aplica al terminar
     function setBrightness(p) {
         fromUi.restart()
-        setter.command = ["brightnessctl", "-n2", "set", Math.round(Math.max(0, Math.min(1, p)) * 100) + "%"]
+        clearTarget.stop()
+        target = Math.max(0.01, Math.min(1, p))
+        if (!setter.running) applyBrightness()
+    }
+
+    function nudgeBrightness(d) { setBrightness(brightness + d) }
+
+    function applyBrightness() {
+        sent = target
+        setter.command = ["brightnessctl", "-n2", "set", Math.round(target * 100) + "%"]
         setter.running = true
     }
 
     Process {
         id: setter
-        onExited: root.reloadBrightness()
+        onExited: {
+            if (Math.abs(root.target - root.sent) > 0.001) {
+                root.applyBrightness()
+            } else {
+                root.reloadBrightness()
+                clearTarget.restart()
+            }
+        }
+    }
+
+    // Tras el último ajuste, volver a mostrar lo que dice sysfs (ya recargado)
+    Timer {
+        id: clearTarget
+        interval: 300
+        onTriggered: root.target = -1
     }
 
     // --- Aviso en pantalla ---
-    // "volume" | "brightness" | "": la cápsula se expande un momento con el nivel
+    // "volume" | "brightness" | "media" | "": la cápsula se expande un momento
+    // con el nivel o con lo que empieza a sonar (Media.qml)
     property string osd: ""
 
-    function show(kind) {
+    function show(kind, duration = 1500) {
         osd = kind
+        osdTimer.interval = duration
         osdTimer.restart()
     }
 
@@ -93,6 +127,8 @@ Singleton {
             root.show("brightness")
         }
         function volume(): void { root.show("volume") }
+        // Muestra lo que suena ahora (Media.qml)
+        function media(): void { if (Media.ready) root.show("media", 4000) }
     }
 
     // Glifos Nerd Font según el nivel

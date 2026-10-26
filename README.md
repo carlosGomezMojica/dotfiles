@@ -28,7 +28,8 @@ Configuración personal de **Arch Linux + Hyprland**, con una shell propia escri
 ### Indicadores (arriba a la derecha)
 - Cápsula con una barra horizontal en **aqua** que se mueve con el audio que está sonando.
 - Al subir o bajar el **volumen** se expande un momento con la barra y el porcentaje en **rojo**; con el **brillo**, en **amarillo**.
-- Al pasar el ratón muestra dos sliders, volumen y brillo, que se ajustan con clic, arrastre o la rueda; clic en el icono de volumen para silenciar.
+- Cuando empieza a sonar algo (o se reanuda), muestra unos segundos la **carátula**, el título y el artista con la app que lo reproduce (MPRIS).
+- Al pasar el ratón muestra el volumen en **rojo** y el brillo en **amarillo** (icono y porcentaje); si está sonando algo, a su izquierda aparecen la carátula, el título y la app. Deslizando **dos dedos** en el touchpad (o con la rueda) sobre cada uno se sube o baja ese nivel.
 
 ### Notificaciones
 - Las muestra Quickshell (sustituye a dunst) arriba a la derecha, como tarjetas con el estilo de los paneles: app y hora, título, cuerpo, acciones como píldoras y una línea con el tiempo restante (se pausa con el ratón encima). Las urgentes van con borde rojo y no caducan. Clic para abrir o descartar, `×` para cerrar; `SUPER + ,` las cierra todas.
