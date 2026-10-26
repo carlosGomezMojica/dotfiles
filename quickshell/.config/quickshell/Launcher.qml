@@ -35,9 +35,20 @@ PanelWindow {
     function close() { shown = false }
     function toggle() { shown ? close() : open() }
 
+    // Terminal para las apps con Terminal=true (nvim, htop, yazi...); igual que `terminal` en keybinds.lua
+    readonly property string terminal: "kitty"
+
     function launch(entry) {
         if (!entry) return
-        entry.execute()
+        // execute() no abre una terminal para las apps de terminal: hay que envolverlas
+        if (entry.runInTerminal) {
+            Quickshell.execDetached({
+                command: [terminal, "-e"].concat(Array.from(entry.command)),
+                workingDirectory: entry.workingDirectory || Quickshell.env("HOME")
+            })
+        } else {
+            entry.execute()
+        }
         close()
     }
 

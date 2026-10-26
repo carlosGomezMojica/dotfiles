@@ -4,7 +4,7 @@
 -------------------
 
 local terminal = "kitty"
-local fileManager = "yazi"
+local fileManager = terminal .. " -e yazi" -- yazi es de terminal: necesita abrirse dentro de kitty
 local menu = "qs ipc call launcher toggle" -- lanzador propio de Quickshell (Launcher.qml)
 
 
