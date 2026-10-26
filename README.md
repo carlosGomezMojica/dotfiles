@@ -21,6 +21,10 @@ Configuración personal de **Arch Linux + Hyprland**, con una shell propia escri
 - Al pasar el ratón muestra el **reloj** y el nombre de la red. Al pulsar el reloj se abre el **calendario**: día de la semana y fecha, el mes (flechas para cambiar, clic en el mes para volver a hoy) y cuánto queda del año en porcentaje, días restantes y semana.
 - Al pulsar la red se abre el panel de conexión: red actual con su IP, señal, seguridad e interfaz, y las redes wifi cercanas (clic para conectar o desconectar, olvidar las guardadas con doble confirmación, interruptor de wifi y campo de contraseña para redes nuevas: Enter conecta, Esc cancela).
 
+### Bluetooth (en la cápsula de red)
+- Barrita junto a la señal wifi: **azul** con un dispositivo conectado, **roja** encendido sin conexión, **gris** apagado. Arranca apagado en cada sesión.
+- Al pulsar la zona del bluetooth: interruptor, dispositivos emparejados (conectar, desconectar, olvidar con doble confirmación y batería si la reportan) y **BUSCAR** para emparejar dispositivos nuevos. Los que piden PIN se emparejan con `bluetoothctl`.
+
 ### Notificaciones
 - Las muestra Quickshell (sustituye a dunst) arriba a la derecha, como tarjetas con el estilo de los paneles: app y hora, título, cuerpo, acciones como píldoras y una línea con el tiempo restante (se pausa con el ratón encima). Las urgentes van con borde rojo y no caducan. Clic para abrir o descartar, `×` para cerrar; `SUPER + ,` las cierra todas.
 

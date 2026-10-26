@@ -22,6 +22,7 @@ Singleton {
     readonly property color error: colors.error
     readonly property color warning: colors.warning
     readonly property color highlight: colors.highlight
+    readonly property color info: colors.info
     readonly property color panelBorder: colors.panel_border
 
     // Fuente de los paneles (Nerd Font: incluye iconos)
@@ -69,6 +70,7 @@ Singleton {
             property string error: "#f38ba8"
             property string warning: "#fab387"
             property string highlight: "#fab387"
+            property string info: "#89b4fa"
             property string panel_border: "#313244"
         }
     }

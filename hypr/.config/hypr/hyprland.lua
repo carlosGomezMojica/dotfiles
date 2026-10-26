@@ -50,6 +50,8 @@ hl.monitor({
 
 hl.on("hyprland.start", function ()
     hl.exec_cmd("uwsm app -- quickshell")
+    -- El bluetooth arranca apagado (bluez lo enciende solo por AutoEnable); se enciende desde la cápsula de red
+    hl.exec_cmd("bluetoothctl power off")
 end)
 
 
