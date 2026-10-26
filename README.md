@@ -1,0 +1,76 @@
+# dotfiles
+
+Configuración personal de **Arch Linux + Hyprland**, con una shell propia escrita en **Quickshell** (QML) y un sistema de temas de color compartido entre ambos. Teclado **Dvorak** (`dvorak-intl`).
+
+## Qué incluye
+
+| Paquete | Destino | Contenido |
+|---|---|---|
+| `hypr/` | `~/.config/hypr` | Hyprland con la **API Lua** (`hyprland.lua` + módulos `keybinds`, `animations`, `theme`) |
+| `quickshell/` | `~/.config/quickshell` | Barra superior, panel de batería y lanzador de aplicaciones |
+| `theme/` | `~/.config/theme`, `~/.local/bin` | Paletas de color y script `theme` para cambiarlas |
+| `packages.txt` / `aur.txt` | — | Paquetes oficiales y de AUR |
+
+### Barra (Quickshell)
+- Cápsula superior que **se auto-oculta**: oculta muestra barritas finas de los 9 workspaces y 10 segmentos de batería; al pasar el ratón se expande con puntos clicables y el icono de pila con el porcentaje.
+- **Panel de batería**: al pulsar la pila se despliega una tarjeta con el nivel en un anillo de puntos, tiempo restante, salud (capacidad real frente a la de diseño), ciclos de carga, consumo y selector de **perfil de energía** (ahorro / equilibrado / rendimiento, vía `power-profiles-daemon`).
+
+### Lanzador de aplicaciones
+- `SUPER + A` abre un buscador propio (sustituye a wofi): búsqueda sin acentos por nombre, descripción y palabras clave, con coincidencia difusa.
+- Teclas: `↑↓` o `Ctrl+T` / `Ctrl+N` (abajo/arriba, como el foco Dvorak), `Enter` o `Tab` abre, `Esc` cierra.
+- Las apps de terminal (nvim, htop, yazi…) se abren dentro de kitty.
+
+### Temas
+Una sola fuente de colores para Hyprland y Quickshell: `theme/.config/theme/palettes/<tema>.json` con tokens semánticos (`bg`, `accent`, `surface`, `success`, `highlight`…). Quickshell los aplica en caliente y Hyprland al recargar.
+
+```sh
+theme                     # lista los temas (* = activo)
+theme catppuccin-mocha    # activa un tema
+```
+
+Para crear un tema, copia `catppuccin-mocha.json` y cambia los hex. Hoy solo existe **Catppuccin Mocha**.
+
+## Atajos principales (`SUPER` = mod)
+
+| Atajo | Acción |
+|---|---|
+| `SUPER + Enter` | Terminal (kitty) |
+| `SUPER + A` | Lanzador de aplicaciones |
+| `SUPER + E` | Gestor de archivos (yazi en kitty) |
+| `SUPER + Q` | Cerrar ventana |
+| `SUPER + H / S / N / T` | Foco izquierda / derecha / arriba / abajo |
+| `SUPER + 1…0` | Ir al workspace |
+| `SUPER + SHIFT + 1…0` | Mover ventana al workspace |
+| `SUPER + SHIFT + H / S` | Workspace anterior / siguiente |
+| `SUPER + D` | Workspace especial (`SHIFT` para mover la ventana) |
+| `SUPER + F` / `P` / `J` | Flotante / pseudo / cambiar split |
+| `SUPER + C` / `V` | Copiar / pegar (envía `Ctrl+Shift+C/V`) |
+| `SUPER + M` | Salir de Hyprland |
+
+## Instalación
+
+```sh
+git clone <repo> ~/dotfiles && cd ~/dotfiles
+
+# Paquetes
+sudo pacman -S --needed - < packages.txt
+yay -S --needed - < aur.txt
+
+# Enlaces simbólicos (GNU Stow)
+stow hypr quickshell theme
+```
+
+- `~/.local/bin` debe estar en el `PATH` para usar el comando `theme`.
+- Fuentes usadas: JetBrainsMono, CaskaydiaCove y FiraCode **Nerd Font** (incluidas en `packages.txt`).
+- Quickshell lo arranca Hyprland al iniciar (`uwsm app -- quickshell`).
+
+## Recargar
+
+| Qué | Cómo |
+|---|---|
+| Hyprland | `hyprctl reload` (errores: `hyprctl configerrors`) |
+| Quickshell (QML) | Automático al guardar |
+| Quickshell (fuentes nuevas) | `pkill -x quickshell; hyprctl dispatch 'hl.dsp.exec_cmd("uwsm app -- quickshell")'` |
+| Lanzador por IPC | `qs ipc call launcher toggle` |
+
+Las listas de paquetes se regeneran con `pacman -Qqen > packages.txt` y `pacman -Qqem > aur.txt`.
