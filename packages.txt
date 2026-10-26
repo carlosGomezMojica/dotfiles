@@ -4,7 +4,6 @@ bluez
 bluez-utils
 btrfs-progs
 dolphin
-dunst
 efibootmgr
 git
 github-cli

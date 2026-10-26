@@ -7,7 +7,7 @@ Configuración personal de **Arch Linux + Hyprland**, con una shell propia escri
 | Paquete | Destino | Contenido |
 |---|---|---|
 | `hypr/` | `~/.config/hypr` | Hyprland con la **API Lua** (`hyprland.lua` + módulos `keybinds`, `animations`, `theme`) |
-| `quickshell/` | `~/.config/quickshell` | Barra superior, cápsula de red, panel de batería, lanzador, fondo de escritorio y selector de tema |
+| `quickshell/` | `~/.config/quickshell` | Barra superior, cápsula de red, notificaciones, panel de batería, lanzador, fondo de escritorio y selector de tema |
 | `theme/` | `~/.config/theme`, `~/.local/bin` | Paletas de color, wallpapers por tema y script `theme` para cambiarlos |
 | `kitty/` | `~/.config/kitty` | `kitty.conf` (incluye los colores del tema activo) |
 | `packages.txt` / `aur.txt` | — | Paquetes oficiales y de AUR |
@@ -19,6 +19,9 @@ Configuración personal de **Arch Linux + Hyprland**, con una shell propia escri
 ### Red (Quickshell)
 - Cápsula arriba a la izquierda con 4 segmentos de señal (verde, ámbar si la conectividad es limitada, rojo sin red).
 - Al pasar el ratón muestra el nombre de la red; al pulsarla abre el panel de conexión: red actual con su IP, señal, seguridad e interfaz, y las redes wifi cercanas (clic para conectar o desconectar, olvidar las guardadas con doble confirmación, interruptor de wifi y campo de contraseña para redes nuevas: Enter conecta, Esc cancela).
+
+### Notificaciones
+- Las muestra Quickshell (sustituye a dunst) arriba a la derecha, como tarjetas con el estilo de los paneles: app y hora, título, cuerpo, acciones como píldoras y una línea con el tiempo restante (se pausa con el ratón encima). Las urgentes van con borde rojo y no caducan. Clic para abrir o descartar, `×` para cerrar; `SUPER + ,` las cierra todas.
 
 ### Lanzador de aplicaciones
 - `SUPER + A` abre un buscador propio (sustituye a wofi): búsqueda sin acentos por nombre, descripción y palabras clave, con coincidencia difusa.
@@ -46,6 +49,7 @@ Temas incluidos: **Catppuccin Mocha** y **Gruvbox Dark**. Para crear uno, copia 
 | `SUPER + Enter` | Terminal (kitty) |
 | `SUPER + A` | Lanzador de aplicaciones |
 | `SUPER + W` | Selector de tema y wallpaper |
+| `SUPER + ,` | Cerrar todas las notificaciones |
 | `SUPER + E` | Gestor de archivos (yazi en kitty) |
 | `SUPER + Q` | Cerrar ventana |
 | `SUPER + H / S / N / T` | Foco izquierda / derecha / arriba / abajo |
@@ -73,6 +77,7 @@ stow hypr quickshell theme kitty
 - `~/.local/bin` debe estar en el `PATH` para usar el comando `theme`.
 - Fuentes usadas: JetBrainsMono, CaskaydiaCove y FiraCode **Nerd Font** (incluidas en `packages.txt`).
 - Quickshell lo arranca Hyprland al iniciar (`uwsm app -- quickshell`).
+- Quickshell es el servidor de notificaciones: si hay otro instalado (dunst, mako…), desactívalo, p. ej. `systemctl --user mask dunst`.
 
 ## Recargar
 
