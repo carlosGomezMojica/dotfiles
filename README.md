@@ -7,7 +7,7 @@ Configuración personal de **Arch Linux + Hyprland**, con una shell propia escri
 | Paquete | Destino | Contenido |
 |---|---|---|
 | `hypr/` | `~/.config/hypr` | Hyprland con la **API Lua** (`hyprland.lua` + módulos `keybinds`, `animations`, `theme`) |
-| `quickshell/` | `~/.config/quickshell` | Barra superior, panel de batería, lanzador, fondo de escritorio y selector de tema |
+| `quickshell/` | `~/.config/quickshell` | Barra superior, cápsula de red, panel de batería, lanzador, fondo de escritorio y selector de tema |
 | `theme/` | `~/.config/theme`, `~/.local/bin` | Paletas de color, wallpapers por tema y script `theme` para cambiarlos |
 | `kitty/` | `~/.config/kitty` | `kitty.conf` (incluye los colores del tema activo) |
 | `packages.txt` / `aur.txt` | — | Paquetes oficiales y de AUR |
@@ -15,6 +15,10 @@ Configuración personal de **Arch Linux + Hyprland**, con una shell propia escri
 ### Barra (Quickshell)
 - Cápsula superior que **se auto-oculta**: oculta muestra barritas finas de los 9 workspaces y 10 segmentos de batería; al pasar el ratón se expande con puntos clicables y el icono de pila con el porcentaje.
 - **Panel de batería**: al pulsar la pila se despliega una tarjeta con el nivel en un anillo de puntos, tiempo restante, salud (capacidad real frente a la de diseño), ciclos de carga, consumo y selector de **perfil de energía** (ahorro / equilibrado / rendimiento, vía `power-profiles-daemon`).
+
+### Red (Quickshell)
+- Cápsula arriba a la izquierda con 4 segmentos de señal (verde, ámbar si la conectividad es limitada, rojo sin red).
+- Al pasar el ratón muestra el nombre de la red; al pulsarla abre el panel de conexión: red actual con su IP, señal, seguridad e interfaz, y las redes wifi cercanas (clic para conectar o desconectar, olvidar las guardadas con doble confirmación, interruptor de wifi y campo de contraseña para redes nuevas: Enter conecta, Esc cancela).
 
 ### Lanzador de aplicaciones
 - `SUPER + A` abre un buscador propio (sustituye a wofi): búsqueda sin acentos por nombre, descripción y palabras clave, con coincidencia difusa.
