@@ -18,7 +18,8 @@ Configuración personal de **Arch Linux + Hyprland**, con una shell propia escri
 
 ### Red (Quickshell)
 - Cápsula arriba a la izquierda con 4 segmentos de señal (verde, ámbar si la conectividad es limitada, rojo sin red).
-- Al pasar el ratón muestra el nombre de la red; al pulsarla abre el panel de conexión: red actual con su IP, señal, seguridad e interfaz, y las redes wifi cercanas (clic para conectar o desconectar, olvidar las guardadas con doble confirmación, interruptor de wifi y campo de contraseña para redes nuevas: Enter conecta, Esc cancela).
+- Al pasar el ratón muestra el **reloj** y el nombre de la red. Al pulsar el reloj se abre el **calendario**: día de la semana y fecha, el mes (flechas para cambiar, clic en el mes para volver a hoy) y cuánto queda del año en porcentaje, días restantes y semana.
+- Al pulsar la red se abre el panel de conexión: red actual con su IP, señal, seguridad e interfaz, y las redes wifi cercanas (clic para conectar o desconectar, olvidar las guardadas con doble confirmación, interruptor de wifi y campo de contraseña para redes nuevas: Enter conecta, Esc cancela).
 
 ### Notificaciones
 - Las muestra Quickshell (sustituye a dunst) arriba a la derecha, como tarjetas con el estilo de los paneles: app y hora, título, cuerpo, acciones como píldoras y una línea con el tiempo restante (se pausa con el ratón encima). Las urgentes van con borde rojo y no caducan. Clic para abrir o descartar, `×` para cerrar; `SUPER + ,` las cierra todas.

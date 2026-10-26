@@ -2,7 +2,8 @@ import Quickshell
 import QtQuick
 
 // Cápsula de red arriba a la izquierda. Colapsada: 4 segmentos de señal.
-// Al pasar el ratón muestra el nombre de la red; al pulsarla abre NetworkPanel.
+// Al pasar el ratón muestra el reloj y el nombre de la red; pulsar el reloj abre
+// CalendarPanel y pulsar la red, NetworkPanel.
 PanelWindow {
     id: bar
     required property var modelData
@@ -19,8 +20,13 @@ PanelWindow {
     // Solo el hotspot recibe el mouse; el resto deja pasar los clicks
     mask: Region { item: hotspot }
 
-    // Expandida al pasar el ratón o mientras el panel está abierto
-    readonly property bool expanded: hover.hovered || panel.open
+    // Expandida al pasar el ratón o mientras un panel está abierto
+    readonly property bool expanded: hover.hovered || panel.open || calendarPanel.open
+
+    SystemClock {
+        id: clockSource
+        precision: SystemClock.Minutes
+    }
 
     // Zona de detección: estable, sin animaciones
     Item {
@@ -31,7 +37,14 @@ PanelWindow {
         z: 1
 
         HoverHandler { id: hover; cursorShape: Qt.PointingHandCursor }
-        TapHandler { onTapped: panel.toggle() }
+        // El hotspot tapa la cápsula: el clic se reparte según el lado del separador
+        TapHandler {
+            onTapped: eventPoint => {
+                const split = separator.mapToItem(hotspot, separator.width / 2, 0).x
+                if (eventPoint.position.x < split) calendarPanel.toggle()
+                else panel.toggle()
+            }
+        }
     }
 
     Rectangle {
@@ -45,7 +58,7 @@ PanelWindow {
         radius: height / 2
         color: Theme.bg
         border.width: 1
-        border.color: panel.open ? Theme.accent : Theme.border
+        border.color: panel.open || calendarPanel.open ? Theme.accent : Theme.border
 
         Behavior on y      { NumberAnimation { duration: 200; easing.type: Easing.OutCubic } }
         Behavior on width  { NumberAnimation { duration: 200; easing.type: Easing.OutCubic } }
@@ -68,6 +81,22 @@ PanelWindow {
 
             Text {
                 anchors.verticalCenter: parent.verticalCenter
+                text: Qt.formatTime(clockSource.date, "HH:mm")
+                color: Theme.text
+                font.family: Theme.font
+                font.pixelSize: 11
+            }
+
+            Rectangle {
+                id: separator
+                anchors.verticalCenter: parent.verticalCenter
+                width: 1
+                height: 14
+                color: Theme.border
+            }
+
+            Text {
+                anchors.verticalCenter: parent.verticalCenter
                 text: Net.icon
                 color: Net.stateColor
                 font.family: Theme.font
@@ -86,6 +115,11 @@ PanelWindow {
 
     NetworkPanel {
         id: panel
+        anchorItem: pill
+    }
+
+    CalendarPanel {
+        id: calendarPanel
         anchorItem: pill
     }
 }
