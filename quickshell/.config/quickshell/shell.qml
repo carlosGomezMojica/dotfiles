@@ -10,6 +10,7 @@ ShellRoot {
 			Wallpaper { modelData: perScreen.modelData }
 			Bar { modelData: perScreen.modelData }
 			NetworkBar { modelData: perScreen.modelData }
+			IndicatorBar { modelData: perScreen.modelData }
 		}
 	}
 

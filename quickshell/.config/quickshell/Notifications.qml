@@ -35,7 +35,8 @@ Scope {
         // En el monitor enfocado
         screen: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name) ?? Quickshell.screens[0]
         anchors { top: true; right: true }
-        margins { top: 8; right: 8 }
+        // Debajo de la cápsula de indicadores (IndicatorBar)
+        margins { top: 50; right: 8 }
         exclusionMode: ExclusionMode.Ignore
         color: "transparent"
         visible: server.trackedNotifications.values.length > 0

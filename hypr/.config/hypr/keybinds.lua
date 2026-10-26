@@ -75,8 +75,9 @@ hl.bind("XF86AudioMicMute",     hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_S
 
 -- Brillo de pantalla (brightnessctl, vía systemd-logind: sin sudo ni grupo video).
 -- -e4: escala exponencial, más natural al ojo con poco brillo; -n2: mínimo para no apagar la pantalla.
-hl.bind("XF86MonBrightnessUp",  hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%+"),                  { locked = true, repeating = true })
-hl.bind("XF86MonBrightnessDown",hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%-"),                  { locked = true, repeating = true })
+-- sysfs no avisa a Quickshell de los cambios: el IPC muestra el aviso amarillo (IndicatorBar).
+hl.bind("XF86MonBrightnessUp",  hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%+ && qs ipc call indicators brightness"),                  { locked = true, repeating = true })
+hl.bind("XF86MonBrightnessDown",hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%- && qs ipc call indicators brightness"),                  { locked = true, repeating = true })
 
 -- Requires playerctl
 --hl.bind("XF86AudioNext",  hl.dsp.exec_cmd("playerctl next"),       { locked = true })

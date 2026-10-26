@@ -7,7 +7,7 @@ Configuración personal de **Arch Linux + Hyprland**, con una shell propia escri
 | Paquete | Destino | Contenido |
 |---|---|---|
 | `hypr/` | `~/.config/hypr` | Hyprland con la **API Lua** (`hyprland.lua` + módulos `keybinds`, `animations`, `theme`) |
-| `quickshell/` | `~/.config/quickshell` | Barra superior, cápsula de red, notificaciones, panel de batería, lanzador, fondo de escritorio y selector de tema |
+| `quickshell/` | `~/.config/quickshell` | Barra superior, cápsula de red, indicadores de volumen y brillo, notificaciones, panel de batería, lanzador, fondo de escritorio y selector de tema |
 | `theme/` | `~/.config/theme`, `~/.local/bin` | Paletas de color, wallpapers por tema y script `theme` para cambiarlos |
 | `kitty/` | `~/.config/kitty` | `kitty.conf` (incluye los colores del tema activo) |
 | `packages.txt` / `aur.txt` | — | Paquetes oficiales y de AUR |
@@ -24,6 +24,11 @@ Configuración personal de **Arch Linux + Hyprland**, con una shell propia escri
 ### Bluetooth (en la cápsula de red)
 - Barrita junto a la señal wifi: **azul** con un dispositivo conectado, **roja** encendido sin conexión, **gris** apagado. Arranca apagado en cada sesión.
 - Al pulsar la zona del bluetooth: interruptor, dispositivos emparejados (conectar, desconectar, olvidar con doble confirmación y batería si la reportan) y **BUSCAR** para emparejar dispositivos nuevos. Los que piden PIN se emparejan con `bluetoothctl`.
+
+### Indicadores (arriba a la derecha)
+- Cápsula con una barra horizontal en **aqua** que se mueve con el audio que está sonando.
+- Al subir o bajar el **volumen** se expande un momento con la barra y el porcentaje en **rojo**; con el **brillo**, en **amarillo**.
+- Al pasar el ratón muestra dos sliders, volumen y brillo, que se ajustan con clic, arrastre o la rueda; clic en el icono de volumen para silenciar.
 
 ### Notificaciones
 - Las muestra Quickshell (sustituye a dunst) arriba a la derecha, como tarjetas con el estilo de los paneles: app y hora, título, cuerpo, acciones como píldoras y una línea con el tiempo restante (se pausa con el ratón encima). Las urgentes van con borde rojo y no caducan. Clic para abrir o descartar, `×` para cerrar; `SUPER + ,` las cierra todas.
