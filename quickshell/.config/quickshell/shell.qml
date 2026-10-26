@@ -3,9 +3,16 @@ import Quickshell
 ShellRoot {
 	Variants {
 		model: Quickshell.screens
-		delegate: Bar{}
+		delegate: Scope {
+			id: perScreen
+			required property var modelData
+
+			Wallpaper { modelData: perScreen.modelData }
+			Bar { modelData: perScreen.modelData }
+		}
 	}
 
-	// Una sola instancia; se muestra en el monitor enfocado
+	// Una sola instancia; se muestran en el monitor enfocado
 	Launcher {}
+	ThemePicker {}
 }

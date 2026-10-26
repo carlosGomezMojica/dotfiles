@@ -6,6 +6,7 @@
 local terminal = "kitty"
 local fileManager = terminal .. " -e yazi" -- yazi es de terminal: necesita abrirse dentro de kitty
 local menu = "qs ipc call launcher toggle" -- lanzador propio de Quickshell (Launcher.qml)
+local themePicker = "qs ipc call themes toggle" -- selector de tema y wallpaper (ThemePicker.qml)
 
 
 ------------------
@@ -20,6 +21,7 @@ hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("command -v hyprshutdown >/dev/null 2
 
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + A", hl.dsp.exec_cmd(menu))
+hl.bind(mainMod .. " + W", hl.dsp.exec_cmd(themePicker))
 hl.bind(mainMod .. " + RETURN", hl.dsp.exec_cmd(terminal))
 
 

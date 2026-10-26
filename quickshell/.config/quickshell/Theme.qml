@@ -38,6 +38,19 @@ Singleton {
         }
     }
 
+    // Wallpaper activo: relativo a wallpapers/ o ruta absoluta; "" = solo color bg
+    property string wallpaperFile: ""
+    readonly property string wallpaper: wallpaperFile === "" ? ""
+        : wallpaperFile.startsWith("/") ? wallpaperFile
+        : dir + "/wallpapers/" + wallpaperFile
+
+    FileView {
+        path: root.dir + "/wallpaper"
+        watchChanges: true
+        onFileChanged: reload()
+        onLoaded: root.wallpaperFile = text().trim()
+    }
+
     FileView {
         path: root.dir + "/palettes/" + root.name + ".json"
         watchChanges: true

@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-# Cambia el tema de colores compartido por Hyprland y Quickshell.
-#   theme           lista los temas disponibles (* = activo)
-#   theme <nombre>  activa un tema
+# Cambia el tema de colores compartido por Hyprland, Quickshell y kitty.
+#   theme                         lista los temas disponibles (* = activo)
+#   theme <nombre>                activa un tema con su primer wallpaper
+#   theme <nombre> <wallpaper>    activa un tema con ese wallpaper
 set -euo pipefail
 
 dir="$HOME/.config/theme"
@@ -16,12 +17,46 @@ if [[ $# -eq 0 ]]; then
 fi
 
 name="$1"
-if [[ ! -f "$dir/palettes/$name.json" ]]; then
+palette="$dir/palettes/$name.json"
+if [[ ! -f "$palette" ]]; then
     echo "theme: no existe la paleta '$name'" >&2
     exit 1
 fi
 
+# Wallpaper: el indicado o la primera imagen de wallpapers/<nombre>/ (vacío = color bg)
+wallpaper="${2:-}"
+# También vale relativo a wallpapers/ (p. ej. gruvbox-dark/bosque.png)
+[[ -n "$wallpaper" && ! -f "$wallpaper" && -f "$dir/wallpapers/$wallpaper" ]] && wallpaper="$dir/wallpapers/$wallpaper"
+if [[ -z "$wallpaper" && -d "$dir/wallpapers/$name" ]]; then
+    wallpaper="$(find -L "$dir/wallpapers/$name" -maxdepth 1 -type f \
+        \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' \) | sort | head -n 1)"
+fi
+if [[ -n "$wallpaper" && ! -f "$wallpaper" ]]; then
+    echo "theme: no existe el wallpaper '$wallpaper'" >&2
+    exit 1
+fi
+# Dentro de wallpapers/ se guarda relativo para que el repo no dependa de $HOME
+wallpaper="${wallpaper#"$dir/wallpapers/"}"
+
 echo "$name" > "$dir/current"
+echo "$wallpaper" > "$dir/wallpaper"
+
+# kitty: colores de terminal de la paleta (tokens foreground, background, cursor, color0-15)
+token() { sed -n "s/.*\"$1\" *: *\"\(#[0-9a-fA-F]\{6\}\)\".*/\1/p" "$palette"; }
+kitty_theme="$HOME/.config/kitty/current-theme.conf"
+mkdir -p "$(dirname "$kitty_theme")"
+{
+    echo "# Generado por \`theme $name\`: no editar"
+    for key in foreground background cursor $(printf 'color%d ' {0..15}); do
+        value="$(token "$key")"
+        [[ -n "$value" ]] && echo "$key $value"
+    done
+    echo "selection_background $(token surface)"
+    echo "selection_foreground $(token text)"
+} > "$kitty_theme"
+# SIGUSR1 hace que kitty recargue su configuración
+pkill -USR1 -x kitty || true
+
 # Quickshell lo detecta solo (watchChanges); Hyprland necesita recargar
 hyprctl reload >/dev/null
-echo "tema activo: $name"
+echo "tema activo: $name${wallpaper:+ ($wallpaper)}"

@@ -1,14 +1,15 @@
 # dotfiles
 
-Configuración personal de **Arch Linux + Hyprland**, con una shell propia escrita en **Quickshell** (QML) y un sistema de temas de color compartido entre ambos. Teclado **Dvorak** (`dvorak-intl`).
+Configuración personal de **Arch Linux + Hyprland**, con una shell propia escrita en **Quickshell** (QML) y un sistema de temas (colores + wallpapers) compartido por Hyprland, Quickshell y kitty. Teclado **Dvorak** (`dvorak-intl`).
 
 ## Qué incluye
 
 | Paquete | Destino | Contenido |
 |---|---|---|
 | `hypr/` | `~/.config/hypr` | Hyprland con la **API Lua** (`hyprland.lua` + módulos `keybinds`, `animations`, `theme`) |
-| `quickshell/` | `~/.config/quickshell` | Barra superior, panel de batería y lanzador de aplicaciones |
-| `theme/` | `~/.config/theme`, `~/.local/bin` | Paletas de color y script `theme` para cambiarlas |
+| `quickshell/` | `~/.config/quickshell` | Barra superior, panel de batería, lanzador, fondo de escritorio y selector de tema |
+| `theme/` | `~/.config/theme`, `~/.local/bin` | Paletas de color, wallpapers por tema y script `theme` para cambiarlos |
+| `kitty/` | `~/.config/kitty` | `kitty.conf` (incluye los colores del tema activo) |
 | `packages.txt` / `aur.txt` | — | Paquetes oficiales y de AUR |
 
 ### Barra (Quickshell)
@@ -20,15 +21,19 @@ Configuración personal de **Arch Linux + Hyprland**, con una shell propia escri
 - Teclas: `↑↓` o `Ctrl+T` / `Ctrl+N` (abajo/arriba, como el foco Dvorak), `Enter` o `Tab` abre, `Esc` cierra.
 - Las apps de terminal (nvim, htop, yazi…) se abren dentro de kitty.
 
-### Temas
-Una sola fuente de colores para Hyprland y Quickshell: `theme/.config/theme/palettes/<tema>.json` con tokens semánticos (`bg`, `accent`, `surface`, `success`, `highlight`…). Quickshell los aplica en caliente y Hyprland al recargar.
+### Temas y wallpapers
+Una sola fuente de colores para Hyprland, Quickshell y kitty: `theme/.config/theme/palettes/<tema>.json` con tokens semánticos (`bg`, `accent`, `surface`, `success`, `highlight`…) y los 16 colores de terminal. Cada tema tiene sus wallpapers en `theme/.config/theme/wallpapers/<tema>/`. Quickshell aplica colores y fondo en caliente (con fundido), kitty recarga sus colores sin reiniciarse y Hyprland recarga sus bordes.
+
+- **Selector cover flow** (`SUPER + W`): carátulas de todos los wallpapers al estilo del iPod classic, con el tema, el nombre del wallpaper y la paleta bajo la carátula central. `←→` (o `Ctrl+H` / `Ctrl+S`), rueda o clic para moverse; `Enter` o clic en la central para aplicar; `Esc` cierra.
+- Desde la terminal:
 
 ```sh
-theme                     # lista los temas (* = activo)
-theme catppuccin-mocha    # activa un tema
+theme                                   # lista los temas (* = activo)
+theme gruvbox-dark                      # activa un tema con su primer wallpaper
+theme gruvbox-dark gruvbox-dark/x.png   # activa un tema con ese wallpaper
 ```
 
-Para crear un tema, copia `catppuccin-mocha.json` y cambia los hex. Hoy solo existe **Catppuccin Mocha**.
+Temas incluidos: **Catppuccin Mocha** y **Gruvbox Dark**. Para crear uno, copia un `.json` de `palettes/`, cambia los hex y crea su carpeta en `wallpapers/`.
 
 ## Atajos principales (`SUPER` = mod)
 
@@ -36,6 +41,7 @@ Para crear un tema, copia `catppuccin-mocha.json` y cambia los hex. Hoy solo exi
 |---|---|
 | `SUPER + Enter` | Terminal (kitty) |
 | `SUPER + A` | Lanzador de aplicaciones |
+| `SUPER + W` | Selector de tema y wallpaper |
 | `SUPER + E` | Gestor de archivos (yazi en kitty) |
 | `SUPER + Q` | Cerrar ventana |
 | `SUPER + H / S / N / T` | Foco izquierda / derecha / arriba / abajo |
@@ -57,7 +63,7 @@ sudo pacman -S --needed - < packages.txt
 yay -S --needed - < aur.txt
 
 # Enlaces simbólicos (GNU Stow)
-stow hypr quickshell theme
+stow hypr quickshell theme kitty
 ```
 
 - `~/.local/bin` debe estar en el `PATH` para usar el comando `theme`.
@@ -71,6 +77,6 @@ stow hypr quickshell theme
 | Hyprland | `hyprctl reload` (errores: `hyprctl configerrors`) |
 | Quickshell (QML) | Automático al guardar |
 | Quickshell (fuentes nuevas) | `pkill -x quickshell; hyprctl dispatch 'hl.dsp.exec_cmd("uwsm app -- quickshell")'` |
-| Lanzador por IPC | `qs ipc call launcher toggle` |
+| Lanzador / selector por IPC | `qs ipc call launcher toggle` / `qs ipc call themes toggle` |
 
 Las listas de paquetes se regeneran con `pacman -Qqen > packages.txt` y `pacman -Qqem > aur.txt`.

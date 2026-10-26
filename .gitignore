@@ -6,3 +6,6 @@ id_*
 **/.cache/
 *.log
 *_history
+
+# Generado por el script theme
+kitty/.config/kitty/current-theme.conf
