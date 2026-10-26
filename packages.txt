@@ -23,6 +23,7 @@ limine
 linux
 linux-firmware
 linux-lts
+mise
 mkinitcpio
 nano
 neovim
@@ -36,6 +37,7 @@ polkit-kde-agent
 power-profiles-daemon
 qt5-wayland
 qt6-wayland
+quickshell
 sddm
 slurp
 smartmontools
@@ -60,8 +62,6 @@ xdg-utils
 xf86-video-amdgpu
 xf86-video-ati
 xf86-video-nouveau
-yay-bin
-yay-bin-debug
-zen-browser-bin
+yazi
 zram-generator
 zsh
