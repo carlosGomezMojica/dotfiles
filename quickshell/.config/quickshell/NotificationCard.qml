@@ -80,11 +80,14 @@ Rectangle {
             width: parent.width
             height: timePill.height
 
+            // Hasta la hora: los nombres largos se recortan con «…» en vez de pisarla
             Row {
                 anchors.verticalCenter: parent.verticalCenter
+                width: parent.width - headerRight.width - 12
                 spacing: 8
 
                 Image {
+                    id: appIcon
                     anchors.verticalCenter: parent.verticalCenter
                     width: 14
                     height: 14
@@ -95,6 +98,8 @@ Rectangle {
 
                 Text {
                     anchors.verticalCenter: parent.verticalCenter
+                    width: parent.width - (appIcon.visible ? appIcon.width + parent.spacing : 0)
+                    elide: Text.ElideRight
                     text: (root.notification?.appName || "Notificación").toUpperCase()
                     color: Theme.text
                     font.family: Theme.font
@@ -104,6 +109,7 @@ Rectangle {
             }
 
             Row {
+                id: headerRight
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
                 spacing: 8
