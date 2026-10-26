@@ -25,6 +25,9 @@ linux-firmware
 linux-lts
 mise
 mkinitcpio
+mpc
+mpd
+mpd-mpris
 nano
 neovim
 network-manager-applet
