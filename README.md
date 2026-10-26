@@ -65,6 +65,8 @@ Temas incluidos: **Catppuccin Mocha** y **Gruvbox Dark**. Para crear uno, copia 
 | `SUPER + F` / `P` / `J` | Flotante / pseudo / cambiar split |
 | `SUPER + C` / `V` | Copiar / pegar (envía `Ctrl+Shift+C/V`) |
 | `SUPER + M` | Salir de Hyprland |
+| Teclas de volumen / silencio | Subir / bajar 5 % (tope 100 %), silenciar altavoz o micrófono |
+| Teclas de brillo | Subir / bajar el brillo 5 % |
 
 ## Instalación
 
