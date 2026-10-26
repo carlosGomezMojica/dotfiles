@@ -1,6 +1,7 @@
 pragma Singleton
 
 import Quickshell
+import Quickshell.Io
 import Quickshell.Services.Mpris
 import QtQuick
 
@@ -14,12 +15,25 @@ import QtQuick
 Singleton {
     id: root
 
-    // El que está sonando; si ninguno suena, el primero
-    readonly property var player: Mpris.players.values.find(p => p.isPlaying) ?? Mpris.players.values[0] ?? null
+    // El último que empezó a sonar (si sigue sonando); si no, cualquiera que suene; si no, el primero
+    readonly property var player: (latest?.isPlaying ? latest : null)
+        ?? Mpris.players.values.find(p => p.isPlaying) ?? latest ?? Mpris.players.values[0] ?? null
+    property var latest: null
+
+    // Recordar qué reproductor arrancó más recientemente (p. ej. MPD mientras suena el navegador)
+    Instantiator {
+        model: Mpris.players
+        delegate: Connections {
+            required property var modelData
+            target: modelData
+            function onIsPlayingChanged() { if (modelData.isPlaying) root.latest = modelData }
+        }
+    }
 
     readonly property string title: player?.trackTitle ?? ""
     readonly property string artist: player?.trackArtist ?? ""
-    readonly property string app: (player?.identity ?? "").toUpperCase()
+    // Sin el sufijo de conexión que añaden algunos puentes ("MPD on 127.0.0.1:6600" -> "MPD")
+    readonly property string app: (player?.identity ?? "").replace(/ on \S+$/i, "").toUpperCase()
     readonly property string art: player?.trackArtUrl ?? ""
     readonly property bool playing: player?.isPlaying ?? false
 
@@ -35,14 +49,16 @@ Singleton {
     readonly property string key: title + "\u0000" + artist
     property string readyKey: ""
     property string pendingKey: ""
-    // Carátula de la pista anterior: la nueva tiene que ser distinta
+    // Carátula (URL original) de la pista anterior: la nueva tiene que ser distinta
     property string previousCover: ""
+    // URL original de la carátula mostrada (`cover` apunta a nuestra copia)
+    property string sourceArt: ""
     // La alerta se muestra al quedar lista la pista (si empezó a sonar después de arrancar)
     property bool alertWanted: false
 
     function begin() {
         pendingKey = key
-        previousCover = cover
+        previousCover = sourceArt
         alertWanted = !settle.running && playing
         waitLimit.restart()
         check()
@@ -54,16 +70,60 @@ Singleton {
         if (preload.status === Image.Ready && art !== "" && art !== previousCover) commit(art)
     }
 
+    // Datos de la pista que se está confirmando (mientras se copia su carátula)
+    property var committing: null
+
     function commit(url) {
         waitLimit.stop()
-        cover = url
-        shownTitle = title
-        shownArtist = artist
-        shownApp = app
-        readyKey = pendingKey
+        committing = { url: url, title: title, artist: artist, app: app, key: pendingKey, alert: alertWanted }
         pendingKey = ""
-        if (alertWanted && playing) Levels.show("media", 4000)
         alertWanted = false
+        stash(url)
+    }
+
+    function finish(local) {
+        const c = committing
+        committing = null
+        if (!c) return
+        cover = local
+        sourceArt = c.url
+        shownTitle = c.title
+        shownArtist = c.artist
+        shownApp = c.app
+        readyKey = c.key
+        if (c.alert && playing) Levels.show("media", 4000)
+    }
+
+    // Los reproductores borran la carátula anterior al escribir la nueva (mpd-mpris en
+    // /tmp/mpd_mpris, Zen en ~/.config/zen/firefox-mpris), y las vistas la piden a otro
+    // tamaño que la precarga, así que vuelven a leer el archivo: si ya no existe, sale la
+    // nota. Se copia a una carpeta propia y se muestra la copia.
+    readonly property string stashDir: Quickshell.env("XDG_RUNTIME_DIR") + "/quickshell-media"
+    property int stashCount: 0
+
+    function stash(url) {
+        if (!url.startsWith("file://")) { finish(url); return }
+        if (copier.running) { copier.queued = true; return }
+        stashCount++
+        copier.dest = stashDir + "/cover-" + stashCount
+        copier.command = ["sh", "-c", 'mkdir -p "$(dirname "$2")" && cp -f "$1" "$2" && rm -f "$3"', "sh",
+                          decodeURIComponent(url.slice(7)), copier.dest, stashDir + "/cover-" + (stashCount - 2)]
+        copier.running = true
+    }
+
+    Process {
+        id: copier
+        property string dest: ""
+        property bool queued: false
+        onExited: code => {
+            if (queued) {
+                // Llegó otra carátula mientras se copiaba: copiar la última
+                queued = false
+                root.stash(root.committing?.url ?? "")
+                return
+            }
+            root.finish(code === 0 ? "file://" + dest : (root.committing?.url ?? ""))
+        }
     }
 
     // Carga la carátula fuera de pantalla para saber cuándo está disponible
@@ -76,7 +136,11 @@ Singleton {
             if (status !== Image.Ready) return
             if (root.pendingKey !== "") root.check()
             // La misma pista cambió de carátula más tarde: actualizarla sin otra alerta
-            else if (root.ready && root.art !== "" && root.art !== root.cover) root.cover = root.art
+            else if (root.ready && root.art !== "" && root.art !== root.sourceArt && root.committing === null) {
+                root.committing = { url: root.art, title: root.shownTitle, artist: root.shownArtist,
+                                    app: root.shownApp, key: root.readyKey, alert: false }
+                root.stash(root.art)
+            }
         }
     }
 

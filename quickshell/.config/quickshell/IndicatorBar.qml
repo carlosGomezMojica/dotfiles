@@ -1,4 +1,5 @@
 import Quickshell
+import Quickshell.Wayland
 import QtQuick
 import QtQuick.Effects
 
@@ -6,7 +7,8 @@ import QtQuick.Effects
 // Colapsada: medidor del audio que suena (aqua). Al cambiar volumen o brillo se expande
 // un momento con el nivel (rojo / amarillo), y al empezar a sonar algo, con la carátula,
 // el título y la app (Media.qml). Al pasar el ratón muestra el volumen (rojo) y el brillo
-// (amarillo); la rueda o dos dedos en el touchpad sobre cada uno lo ajustan.
+// (amarillo); la rueda o dos dedos en el touchpad sobre cada uno lo ajustan. Un clic
+// en cualquier parte abre MediaPanel (reproductor, volumen y brillo).
 PanelWindow {
     id: bar
     required property var modelData
@@ -21,11 +23,16 @@ PanelWindow {
     implicitWidth: Math.max(300, bar.mediaWidth, bar.hoverWidth)
     implicitHeight: 8 + 52 + 8   // la alerta de música es la más alta
 
+    // Teclado "a demanda": la cápsula lo recibe al pulsarla, y así llega al panel multimedia
+    // (flechas y Ctrl+H/S/T/N del reproductor MPD). Fijo a propósito: cambiar el modo al
+    // abrir el panel reconfigura la capa y Hyprland cierra el popup en el acto.
+    WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
+
     // Solo el hotspot recibe el mouse; el resto deja pasar los clicks
     mask: Region { item: hotspot }
 
     // Expandida con el ratón encima (y un instante tras salir, sin parpadeos)
-    readonly property bool expanded: hover.hovered || closeDelay.running
+    readonly property bool expanded: hover.hovered || closeDelay.running || mediaPanel.open
     // Aviso de volumen/brillo, solo si no está ya expandida
     readonly property bool showOsd: Levels.osd !== "" && !expanded
     readonly property bool showMedia: showOsd && Levels.osd === "media"
@@ -46,6 +53,12 @@ PanelWindow {
         function onHoveredChanged() { if (!hover.hovered) closeDelay.restart() }
     }
 
+    // Si las teclas llegan a la cápsula y no al popup, pasarlas al reproductor
+    Item {
+        focus: mediaPanel.open
+        Keys.onPressed: event => { event.accepted = mediaPanel.handleKey(event) }
+    }
+
     // Zona de detección: estable, sin animaciones. No acepta la rueda, así que esta
     // llega a las zonas de volumen y brillo de debajo.
     Item {
@@ -56,7 +69,9 @@ PanelWindow {
         height: bar.expanded ? 8 + 34 : 8
         z: 1
 
-        HoverHandler { id: hover }
+        HoverHandler { id: hover; cursorShape: Qt.PointingHandCursor }
+        // No acepta la rueda: esta sigue llegando a LevelZone
+        TapHandler { onTapped: mediaPanel.toggle() }
     }
 
     Rectangle {
@@ -74,8 +89,9 @@ PanelWindow {
         radius: height / 2
         color: Theme.bg
         border.width: 1
-        border.color: Theme.border
+        border.color: mediaPanel.open ? Theme.accent : Theme.border
 
+        Behavior on border.color { ColorAnimation { duration: 150 } }
         Behavior on y      { NumberAnimation { duration: 200; easing.type: Easing.OutCubic } }
         Behavior on width  { NumberAnimation { duration: 200; easing.type: Easing.OutCubic } }
         Behavior on height { NumberAnimation { duration: 200; easing.type: Easing.OutCubic } }
@@ -322,5 +338,10 @@ PanelWindow {
                 onNudged: d => Levels.nudgeBrightness(d)
             }
         }
+    }
+
+    MediaPanel {
+        id: mediaPanel
+        anchorItem: pill
     }
 }

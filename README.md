@@ -10,6 +10,7 @@ Configuración personal de **Arch Linux + Hyprland**, con una shell propia escri
 | `quickshell/` | `~/.config/quickshell` | Barra superior, cápsula de red, indicadores de volumen y brillo, notificaciones, panel de batería, lanzador, fondo de escritorio y selector de tema |
 | `theme/` | `~/.config/theme`, `~/.local/bin` | Paletas de color, wallpapers por tema y script `theme` para cambiarlos |
 | `kitty/` | `~/.config/kitty` | `kitty.conf` (incluye los colores del tema activo) |
+| `mpd/` | `~/.config/mpd`, `~/.config/systemd/user` | MPD (biblioteca en `~/Música`) y ajuste del servicio `mpd-mpris` |
 | `packages.txt` / `aur.txt` | — | Paquetes oficiales y de AUR |
 
 ### Barra (Quickshell)
@@ -28,8 +29,15 @@ Configuración personal de **Arch Linux + Hyprland**, con una shell propia escri
 ### Indicadores (arriba a la derecha)
 - Cápsula con una barra horizontal en **aqua** que se mueve con el audio que está sonando.
 - Al subir o bajar el **volumen** se expande un momento con la barra y el porcentaje en **rojo**; con el **brillo**, en **amarillo**.
+- **Al pulsarla** se abre el panel multimedia: carátula con reflejo al estilo iPod y el título encima, tiempo de reproducción, botones anterior / reproducir-pausa / siguiente, y sliders de volumen y brillo (clic en el porcentaje de volumen para silenciar). Pestañas **MPRIS** (lo que suene en cualquier app) y **MPD**.
 - Cuando empieza a sonar algo (o se reanuda), muestra unos segundos la **carátula**, el título y el artista con la app que lo reproduce (MPRIS).
 - Al pasar el ratón muestra el volumen en **rojo** y el brillo en **amarillo** (icono y porcentaje); si está sonando algo, a su izquierda aparecen la carátula, el título y la app. Deslizando **dos dedos** en el touchpad (o con la rueda) sobre cada uno se sube o baja ese nivel.
+
+### Reproductor de música (MPD)
+- En la pestaña **MPD** del panel multimedia: tus álbumes de `~/Música` en **cover flow** con reflejo. Muévete con `←` `→`, `Ctrl+H` / `Ctrl+S`, la rueda o dos dedos en el touchpad; `Enter` o clic en la carátula central abre el álbum.
+- Lista de canciones del álbum (la que suena en aqua): `↑` `↓` o `Ctrl+N` / `Ctrl+T` para moverte, `Enter` o clic para reproducir desde ahí, `Esc` vuelve a los álbumes.
+- Reproduciendo: carátula con reflejo, título, álbum y artista, tiempo (clic para saltar) y anterior / reproducir-pausa / siguiente (también `←` `→` y `Espacio`).
+- Carátulas: `cover.jpg`/`folder.jpg`/`front.jpg` de la carpeta del álbum o la imagen incrustada en el archivo.
 
 ### Notificaciones
 - Las muestra Quickshell (sustituye a dunst) arriba a la derecha, como tarjetas con el estilo de los paneles: app y hora, título, cuerpo, acciones como píldoras y una línea con el tiempo restante (se pausa con el ratón encima). Las urgentes van con borde rojo y no caducan. Clic para abrir o descartar, `×` para cerrar; `SUPER + ,` las cierra todas.
@@ -85,6 +93,8 @@ yay -S --needed - < aur.txt
 
 # Enlaces simbólicos (GNU Stow)
 stow hypr quickshell theme kitty
+stow --no-folding mpd          # systemd no lee drop-ins enlazados como directorio
+systemctl --user enable --now mpd mpd-mpris
 ```
 
 - `~/.local/bin` debe estar en el `PATH` para usar el comando `theme`.

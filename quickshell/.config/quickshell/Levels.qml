@@ -15,7 +15,7 @@ Singleton {
     readonly property real volume: sink?.audio?.volume ?? 0     // 0..1
     readonly property bool muted: sink?.audio?.muted ?? false
     // Nivel del audio que suena ahora (0..1), para el medidor
-    readonly property real peak: muted ? 0 : peakMonitor.peak
+    readonly property real peak: muted ? 0 : (peakMonitor.peak ?? 0)
 
     // Sin tracker las propiedades de audio del sink no se cargan ni se pueden escribir
     PwObjectTracker { objects: [root.sink] }
