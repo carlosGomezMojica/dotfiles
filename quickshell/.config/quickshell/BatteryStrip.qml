@@ -9,8 +9,8 @@ Row {
     readonly property var device: UPower.displayDevice
     readonly property real level: device.percentage   // 0..1
     readonly property int filled: Math.round(level * 10)
-    readonly property color fillColor: level <= 0.2 ? "#f38ba8"   // batería baja
-                                     : "#a6e3a1"
+    readonly property color fillColor: level <= 0.2 ? Theme.error   // batería baja
+                                     : Theme.success
 
     visible: device.isLaptopBattery
 
@@ -30,7 +30,7 @@ Row {
                 width: parent.width
                 height: seg.on ? 5 : 3
                 radius: 0   // estilo cuadrado
-                color: seg.on ? root.fillColor : "#313244"
+                color: seg.on ? root.fillColor : Theme.surface
 
                 Behavior on height { NumberAnimation { duration: 150 } }
                 Behavior on color  { ColorAnimation { duration: 150 } }

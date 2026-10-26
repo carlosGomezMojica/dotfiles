@@ -37,9 +37,9 @@ PanelWindow {
 	width: expanded ? parent.width : collapsedWidth
 	height: expanded ? 34 : 9
 	radius: height / 2
-        color: "#000000"
+        color: Theme.bg
         border.width: 1
-        border.color: "#1f1f1f"
+        border.color: Theme.border
 
         Behavior on y      { NumberAnimation { duration: 200; easing.type: Easing.OutCubic } }
         Behavior on width  { NumberAnimation { duration: 200; easing.type: Easing.OutCubic } }

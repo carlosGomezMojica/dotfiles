@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# Cambia el tema de colores compartido por Hyprland y Quickshell.
+#   theme           lista los temas disponibles (* = activo)
+#   theme <nombre>  activa un tema
+set -euo pipefail
+
+dir="$HOME/.config/theme"
+current="$(cat "$dir/current" 2>/dev/null || true)"
+
+if [[ $# -eq 0 ]]; then
+    for f in "$dir"/palettes/*.json; do
+        name="$(basename "$f" .json)"
+        [[ "$name" == "$current" ]] && echo "* $name" || echo "  $name"
+    done
+    exit 0
+fi
+
+name="$1"
+if [[ ! -f "$dir/palettes/$name.json" ]]; then
+    echo "theme: no existe la paleta '$name'" >&2
+    exit 1
+fi
+
+echo "$name" > "$dir/current"
+# Quickshell lo detecta solo (watchChanges); Hyprland necesita recargar
+hyprctl reload >/dev/null
+echo "tema activo: $name"

@@ -16,6 +16,12 @@ require("keybinds")
 require("animations")
 
 ------------------
+------Tema--------
+------------------
+
+local theme = require("theme")
+
+------------------
 ---- MONITORS ----
 ------------------
 
@@ -89,8 +95,8 @@ hl.config({
         border_size = 2,
 
         col = {
-            active_border   = { colors = {"rgba(33ccffee)", "rgba(00ff99ee)"}, angle = 45 },
-            inactive_border = "rgba(595959aa)",
+            active_border   = { colors = { theme.rgba(theme.accent, "ee"), theme.rgba(theme.border_active_2, "ee") }, angle = 45 },
+            inactive_border = theme.rgba(theme.border_inactive, "aa"),
         },
 
         -- Set to true to enable resizing windows by clicking and dragging on borders and gaps
@@ -114,7 +120,7 @@ hl.config({
             enabled      = true,
             range        = 4,
             render_power = 3,
-            color        = 0xee1a1a1a,
+            color        = theme.rgba(theme.shadow, "ee"),
         },
 
         blur = {

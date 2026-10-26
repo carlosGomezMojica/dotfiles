@@ -16,9 +16,9 @@ Row {
 			width : active ? 28 : 10
 			height: 10
 			radius: height / 2
-			color: active ? "#cba6f7"
-			     : occupied ? "#9399b2"
-			     : "#313244"
+			color: active ? Theme.accent
+			     : occupied ? Theme.muted
+			     : Theme.surface
 			Behavior on width { NumberAnimation { duration: 150; easing.type: Easing.OutCubic}}
 			Behavior on color { ColorAnimation { duration: 150} }
 

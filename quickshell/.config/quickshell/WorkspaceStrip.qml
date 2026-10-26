@@ -24,9 +24,9 @@ Row {
                 width: parent.width
                 height: seg.active ? 5 : 3
                 radius: height / 2
-                color: seg.active ? "#cba6f7"      // activo
-                     : seg.occupied ? "#9399b2"    // ocupado
-                     : "#313244"                   // vacío
+                color: seg.active ? Theme.accent      // activo
+                     : seg.occupied ? Theme.muted    // ocupado
+                     : Theme.surface                   // vacío
 
                 Behavior on height { NumberAnimation { duration: 150 } }
                 Behavior on color  { ColorAnimation { duration: 150 } }

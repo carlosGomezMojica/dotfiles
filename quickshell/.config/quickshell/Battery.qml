@@ -8,8 +8,8 @@ Row {
 
     readonly property var device: UPower.displayDevice
     readonly property real level: device.percentage   // 0..1
-    readonly property color fillColor: level <= 0.2 ? "#f38ba8"   // batería baja
-                                     : "#a6e3a1"
+    readonly property color fillColor: level <= 0.2 ? Theme.error   // batería baja
+                                     : Theme.success
 
     visible: device.isLaptopBattery
 
@@ -25,7 +25,7 @@ Row {
             radius: 3
             color: "transparent"
             border.width: 1
-            border.color: "#9399b2"
+            border.color: Theme.muted
 
             Rectangle {
                 x: 2
@@ -48,7 +48,7 @@ Row {
             width: 2
             height: 5
             radius: 1
-            color: "#9399b2"
+            color: Theme.muted
         }
     }
 
@@ -59,7 +59,7 @@ Row {
         anchors.verticalCenterOffset: height / 2
             - (baselineOffset + digits.tightBoundingRect.y + digits.tightBoundingRect.height / 2)
         text: Math.round(root.level * 100) + "%"
-        color: "#cdd6f4"
+        color: Theme.text
         font.pixelSize: 12
         font.bold: true
 
