@@ -24,9 +24,13 @@ PanelWindow {
         id: hotspot
         anchors.horizontalCenter: parent.horizontalCenter
         y: 0
-        // Colapsada: franja delgada arriba. Expandida: cubre toda la cápsula.
-        width: bar.expanded ? parent.width : 120
+        // Colapsada: franja delgada del ancho de la cápsula. Expandida: cubre toda la cápsula.
+        // (collapsedWidth solo cambia con el contenido, no se anima)
+        width: bar.expanded ? parent.width : pill.collapsedWidth
         height: bar.expanded ? parent.height : 8
+        // Por encima de la cápsula para que ningún hijo le robe el hover;
+        // no acepta clics, así que estos llegan a los puntos y a la batería
+        z: 1
 
         HoverHandler { id: hover }
     }
@@ -67,6 +71,8 @@ PanelWindow {
             anchors.centerIn: parent
             spacing: 16
             opacity: pill.expanded ? 1 : 0
+            // Oculta (opacidad 0) seguiría capturando ratón y tapando el hotspot
+            enabled: pill.expanded
             Behavior on opacity { NumberAnimation { duration: 150 } }
 
             Workspaces { anchors.verticalCenter: parent.verticalCenter }
