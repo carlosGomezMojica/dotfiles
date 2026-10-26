@@ -20,6 +20,11 @@ Singleton {
     readonly property color text: colors.text
     readonly property color success: colors.success
     readonly property color error: colors.error
+    readonly property color warning: colors.warning
+    readonly property color panelBorder: colors.panel_border
+
+    // Fuente de los paneles (Nerd Font: incluye iconos)
+    readonly property string font: "JetBrainsMono Nerd Font"
 
     // Nombre del tema activo (lo escribe el script `theme`)
     FileView {
@@ -48,6 +53,8 @@ Singleton {
             property string text: "#cdd6f4"
             property string success: "#a6e3a1"
             property string error: "#f38ba8"
+            property string warning: "#fab387"
+            property string panel_border: "#313244"
         }
     }
 }

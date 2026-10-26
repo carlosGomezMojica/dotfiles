@@ -44,6 +44,9 @@ smartmontools
 snapper
 stow
 sudo
+ttf-cascadia-code-nerd
+ttf-firacode-nerd
+ttf-jetbrains-mono-nerd
 unzip
 uwsm
 vim

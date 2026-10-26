@@ -2,6 +2,7 @@ import Quickshell
 import QtQuick
 
 PanelWindow {
+    id: bar
     required property var modelData
     screen: modelData
 
@@ -15,21 +16,24 @@ PanelWindow {
     // Solo el hotspot recibe el mouse; el resto deja pasar los clicks
     mask: Region { item: hotspot }
 
+    // Expandida al pasar el ratón o mientras el panel de batería está abierto
+    readonly property bool expanded: hover.hovered || batteryPanel.open
+
     // Zona de detección: estable, sin animaciones
     Item {
         id: hotspot
         anchors.horizontalCenter: parent.horizontalCenter
         y: 0
         // Colapsada: franja delgada arriba. Expandida: cubre toda la cápsula.
-        width: hover.hovered ? parent.width : 120
-        height: hover.hovered ? parent.height : 8
+        width: bar.expanded ? parent.width : 120
+        height: bar.expanded ? parent.height : 8
 
         HoverHandler { id: hover }
     }
 
     Rectangle {
         id: pill
-        readonly property bool expanded: hover.hovered
+        readonly property bool expanded: bar.expanded
 	readonly property real collapsedWidth: collapsedRow.implicitWidth + 20
 
         anchors.horizontalCenter: parent.horizontalCenter
@@ -66,7 +70,16 @@ PanelWindow {
             Behavior on opacity { NumberAnimation { duration: 150 } }
 
             Workspaces { anchors.verticalCenter: parent.verticalCenter }
-            Battery { anchors.verticalCenter: parent.verticalCenter }
+            Battery {
+                id: battery
+                anchors.verticalCenter: parent.verticalCenter
+                onClicked: batteryPanel.toggle()
+            }
         }
+    }
+
+    BatteryPanel {
+        id: batteryPanel
+        anchorItem: battery
     }
 }

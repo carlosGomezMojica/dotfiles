@@ -11,7 +11,13 @@ Row {
     readonly property color fillColor: level <= 0.2 ? Theme.error   // batería baja
                                      : Theme.success
 
+    signal clicked()
+
     visible: device.isLaptopBattery
+
+    // Handlers (no ocupan sitio en el Row): abre el panel de batería
+    TapHandler { onTapped: root.clicked() }
+    HoverHandler { cursorShape: Qt.PointingHandCursor }
 
     Item {
         anchors.verticalCenter: parent.verticalCenter
