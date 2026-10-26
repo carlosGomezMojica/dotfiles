@@ -10,6 +10,7 @@ Row {
     readonly property real level: device.percentage   // 0..1
     readonly property color fillColor: level <= 0.2 ? Theme.error   // batería baja
                                      : Theme.success
+    readonly property bool charging: device.state === UPowerDeviceState.Charging
 
     signal clicked()
 
@@ -43,6 +44,16 @@ Row {
 
                 Behavior on width { NumberAnimation { duration: 200; easing.type: Easing.OutCubic } }
                 Behavior on color { ColorAnimation { duration: 150 } }
+
+                // Cargando: la punta del relleno (hasta donde va la carga) en naranja
+                Rectangle {
+                    anchors.right: parent.right
+                    width: Math.min(parent.width, 4)
+                    height: parent.height
+                    radius: 1.5
+                    color: Theme.warning
+                    visible: root.charging
+                }
             }
         }
 

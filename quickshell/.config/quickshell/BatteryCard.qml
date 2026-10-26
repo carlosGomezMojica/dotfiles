@@ -80,7 +80,9 @@ Rectangle {
                 id: statePill
                 anchors.right: parent.right
                 label: root.charging ? "CARGANDO" : root.full ? "LLENA" : "DESCARGANDO"
-                dotColor: root.charging || root.full ? Theme.success : root.levelColor
+                dotColor: root.charging ? Theme.warning : root.full ? Theme.success : root.levelColor
+                borderColor: root.charging ? Theme.warning : Theme.panelBorder
+                textColor: root.charging ? Theme.warning : Theme.text
             }
         }
 
@@ -95,7 +97,9 @@ Rectangle {
                 width: 150
                 height: 150
                 level: root.level
-                onColor: root.levelColor
+                // Cargando: anillo en verde y el punto hasta donde va la carga en naranja
+                onColor: root.charging ? Theme.success : root.levelColor
+                leadColor: root.charging ? Theme.warning : root.levelColor
             }
 
             Column {

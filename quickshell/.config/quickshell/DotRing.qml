@@ -9,6 +9,8 @@ Item {
     property int count: 48
     property real dotSize: 4
     property color onColor: Theme.success
+    // Color del último punto encendido (p. ej. hasta donde va la carga); por defecto, el mismo
+    property color leadColor: onColor
     property color offColor: Theme.surface
 
     readonly property int lit: Math.round(level * count)
@@ -21,13 +23,14 @@ Item {
             required property int index
             readonly property real angle: index / root.count * 2 * Math.PI - Math.PI / 2
             readonly property bool on: index < root.lit
+            readonly property bool lead: index === root.lit - 1
 
             width: on ? root.dotSize : root.dotSize * 0.7
             height: width
             radius: width / 2
             x: root.width / 2 + Math.cos(angle) * root.ringRadius - width / 2
             y: root.height / 2 + Math.sin(angle) * root.ringRadius - height / 2
-            color: on ? root.onColor : root.offColor
+            color: lead ? root.leadColor : on ? root.onColor : root.offColor
 
             Behavior on color { ColorAnimation { duration: 200 } }
             Behavior on width { NumberAnimation { duration: 200 } }
