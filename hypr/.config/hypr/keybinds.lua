@@ -8,6 +8,9 @@ local fileManager = terminal .. " -e yazi" -- yazi es de terminal: necesita abri
 local menu = "qs ipc call launcher toggle" -- lanzador propio de Quickshell (Launcher.qml)
 local themePicker = "qs ipc call themes toggle" -- selector de tema y wallpaper (ThemePicker.qml)
 local dismissNotifications = "qs ipc call notifications dismissAll" -- cerrar notificaciones (Notifications.qml)
+-- Capturas: hyprshot + notificación con editar (satty) / copiar / carpeta. Ruta completa:
+-- ~/.local/bin no está en el PATH de Hyprland
+local screenshot = os.getenv("HOME") .. "/.local/bin/captura"
 
 
 ------------------
@@ -24,6 +27,13 @@ hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + A", hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + W", hl.dsp.exec_cmd(themePicker))
 hl.bind(mainMod .. " + comma", hl.dsp.exec_cmd(dismissNotifications))
+
+-- Capturas de pantalla: Print región, SHIFT ventana, CTRL pantalla completa
+-- (SUPER + SHIFT + P: región, para teclados sin Print)
+hl.bind("Print", hl.dsp.exec_cmd(screenshot .. " region"))
+hl.bind("SHIFT + Print", hl.dsp.exec_cmd(screenshot .. " window"))
+hl.bind("CTRL + Print", hl.dsp.exec_cmd(screenshot .. " output"))
+hl.bind(mainMod .. " + SHIFT + P", hl.dsp.exec_cmd(screenshot .. " region"))
 hl.bind(mainMod .. " + RETURN", hl.dsp.exec_cmd(terminal))
 
 

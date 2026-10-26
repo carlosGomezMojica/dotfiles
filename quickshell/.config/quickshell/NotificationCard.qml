@@ -9,6 +9,8 @@ Rectangle {
     // Pasa a null durante la animación de salida (la notificación ya se destruyó)
     required property var notification
     readonly property bool critical: notification?.urgency === NotificationUrgency.Critical
+    // Capturas de pantalla (script `captura`): la imagen va como vista previa ancha
+    readonly property bool screenshot: (notification?.hints?.category ?? "") === "screenshot"
     readonly property color urgencyColor: critical ? Theme.error
         : notification?.urgency === NotificationUrgency.Low ? Theme.muted
         : Theme.accent
@@ -141,6 +143,15 @@ Rectangle {
             }
         }
 
+        // Captura: vista previa a todo el ancho, redondeada como las carátulas
+        CoverArt {
+            width: parent.width
+            height: 150
+            radius: 10
+            visible: root.screenshot && source !== ""
+            source: root.screenshot ? (root.notification?.image ?? "") : ""
+        }
+
         // Imagen (si la hay), título y cuerpo
         Row {
             width: parent.width
@@ -153,7 +164,7 @@ Rectangle {
                 source: root.notification?.image ?? ""
                 sourceSize: Qt.size(88, 88)
                 fillMode: Image.PreserveAspectCrop
-                visible: source.toString() !== "" && status === Image.Ready
+                visible: !root.screenshot && source.toString() !== "" && status === Image.Ready
             }
 
             Column {

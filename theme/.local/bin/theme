@@ -57,6 +57,9 @@ mkdir -p "$(dirname "$kitty_theme")"
 # SIGUSR1 hace que kitty recargue su configuración
 pkill -USR1 -x kitty || true
 
+# satty (editor de capturas) con los colores nuevos
+"$HOME/.local/bin/captura" --satty-config || true
+
 # Quickshell lo detecta solo (watchChanges); Hyprland necesita recargar
 hyprctl reload >/dev/null
 echo "tema activo: $name${wallpaper:+ ($wallpaper)}"

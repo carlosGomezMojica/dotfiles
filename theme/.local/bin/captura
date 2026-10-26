@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+# Capturas de pantalla con hyprshot; la notificación (Quickshell) ofrece editarla con
+# satty, volver a copiarla o abrir la carpeta.
+#   captura region|window|output   captura (se guarda y se copia al portapapeles)
+#   captura --satty-config         regenera ~/.config/satty/config.toml con el tema y la fuente
+set -euo pipefail
+
+theme_dir="$HOME/.config/theme"
+dir="${CAPTURA_DIR:-$HOME/Imágenes/Capturas}"
+satty_conf="$HOME/.config/satty/config.toml"
+
+# Configuración de satty: colores del tema activo y la fuente del escritorio
+satty_config() {
+    local name palette font
+    name="$(cat "$theme_dir/current" 2>/dev/null || echo catppuccin-mocha)"
+    palette="$theme_dir/palettes/$name.json"
+    font="$(cat "$theme_dir/font" 2>/dev/null || echo "JetBrainsMono Nerd Font")"
+    token() { sed -n "s/.*\"$1\" *: *\"\(#[0-9a-fA-F]\{6\}\)\".*/\1/p" "$palette"; }
+    colors=()
+    for t in accent error warning yellow success aqua info text; do
+        c="$(token "$t")"
+        [[ -n "$c" ]] && colors+=("\"$c\"")
+    done
+    mkdir -p "$(dirname "$satty_conf")"
+    cat > "$satty_conf" <<EOF
+# Generado por \`captura --satty-config\` (lo llaman \`theme\` y \`font\`): no editar
+[general]
+early-exit = true
+copy-command = "wl-copy"
+initial-tool = "arrow"
+annotation-size-factor = 1.5
+corner-roundness = 12
+primary-highlighter = "block"
+
+[font]
+family = "$font"
+
+[color-palette]
+palette = [$(IFS=,; echo "${colors[*]}")]
+EOF
+}
+
+if [[ "${1:-}" == "--satty-config" ]]; then
+    satty_config
+    exit 0
+fi
+
+mode="${1:-region}"
+case "$mode" in
+    region|window|output) ;;
+    *) echo "captura: modo desconocido '$mode' (region, window u output)" >&2; exit 1 ;;
+esac
+
+mkdir -p "$dir"
+[[ -f "$satty_conf" ]] || satty_config
+
+file="captura-$(date +%Y-%m-%d_%H-%M-%S).png"
+path="$dir/$file"
+
+# --silent: sin la notificación de hyprshot (mandamos la nuestra, con acciones)
+hyprshot -m "$mode" -o "$dir" -f "$file" --silent || true
+# Selección cancelada (Esc): no hay archivo, no se avisa
+[[ -f "$path" ]] || exit 0
+
+action="$(notify-send -a "Captura" -c screenshot -i camera-photo -t 0 \
+    -h "string:image-path:$path" \
+    -A default=Editar -A edit=EDITAR -A copy=COPIAR -A folder=CARPETA \
+    --wait "Captura realizada" "$file · copiada al portapapeles" || true)"
+
+case "$action" in
+    default|edit)
+        satty --filename "$path" --output-filename "$path" --copy-command wl-copy --early-exit ;;
+    copy)
+        wl-copy --type image/png < "$path" ;;
+    folder)
+        xdg-open "$dir" >/dev/null 2>&1 ;;
+esac

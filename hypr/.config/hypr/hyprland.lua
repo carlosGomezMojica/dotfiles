@@ -265,6 +265,17 @@ hl.window_rule({
 -- })
 -- overlayLayerRule:set_enabled(false)
 
+-- Editor de capturas (satty, desde la notificación de `captura`): flotante, centrado
+-- y al 80 % de la pantalla
+hl.window_rule({
+    name  = "satty-float",
+    match = { class = "com.gabm.satty" },
+
+    float  = true,
+    size   = "monitor_w*0.8 monitor_h*0.8",
+    center = true,
+})
+
 -- Hyprland-run windowrule
 hl.window_rule({
     name  = "move-hyprland-run",

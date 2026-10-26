@@ -41,6 +41,11 @@ Configuración personal de **Arch Linux + Hyprland**, con una shell propia escri
 - Reproduciendo: carátula con reflejo, título, álbum y artista, tiempo (clic para saltar) y anterior / reproducir-pausa / siguiente (también `←` `→` y `Espacio`).
 - Carátulas: `cover.jpg`/`folder.jpg`/`front.jpg` de la carpeta del álbum o la imagen incrustada en el archivo.
 
+### Capturas de pantalla
+- `Print` (región), `SHIFT + Print` (ventana), `CTRL + Print` (pantalla) o `SUPER + SHIFT + P` (región): **hyprshot** guarda la captura en `~/Imágenes/Capturas` y la copia al portapapeles.
+- Aparece una notificación con la vista previa y tres acciones: **EDITAR** (abre **satty** para anotarla; al guardar o copiar se sobrescribe y va al portapapeles), **COPIAR** y **CARPETA**. Clic en la tarjeta también edita.
+- satty se abre flotante y centrado (80 % de la pantalla), con los colores del tema y la fuente del escritorio (se regenera con `theme` y `font`).
+
 ### Notificaciones
 - Las muestra Quickshell (sustituye a dunst) arriba a la derecha, como tarjetas con el estilo de los paneles: app y hora, título, cuerpo, acciones como píldoras y una línea con el tiempo restante (se pausa con el ratón encima). Las urgentes van con borde rojo y no caducan. Clic para abrir o descartar, `×` para cerrar; `SUPER + ,` las cierra todas.
 
@@ -74,6 +79,7 @@ Una sola fuente para todo el escritorio (hoy **JetBrainsMono Nerd Font**): Quick
 | `SUPER + A` | Lanzador de aplicaciones |
 | `SUPER + W` | Selector de tema y wallpaper |
 | `SUPER + ,` | Cerrar todas las notificaciones |
+| `Print` / `SHIFT + Print` / `CTRL + Print` | Captura de región / ventana / pantalla completa (también `SUPER + SHIFT + P`: región) |
 | `SUPER + E` | Gestor de archivos (yazi en kitty) |
 | `SUPER + Q` | Cerrar ventana |
 | `SUPER + H / S / N / T` | Foco izquierda / derecha / arriba / abajo |

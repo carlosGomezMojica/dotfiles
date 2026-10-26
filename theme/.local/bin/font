@@ -64,5 +64,8 @@ if command -v kwriteconfig6 >/dev/null; then
     kwriteconfig6 --file kdeglobals --group WM --key activeFont "$font,$size,-1,5,400,0,0,0,0,0"
 fi
 
+# satty (editor de capturas) con la fuente nueva
+"$HOME/.local/bin/captura" --satty-config || true
+
 # Quickshell lo detecta solo (Theme.qml vigila ~/.config/theme/font)
 echo "fuente activa: $font"

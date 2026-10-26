@@ -14,9 +14,11 @@ gst-plugin-pipewire
 htop
 hyprland
 hyprpolkitagent
+hyprshot
 intel-media-driver
 intel-ucode
 kitty
+libnotify
 libpulse
 libva-intel-driver
 libvpl
@@ -42,6 +44,7 @@ power-profiles-daemon
 qt5-wayland
 qt6-wayland
 quickshell
+satty
 sddm
 slurp
 smartmontools
