@@ -5,7 +5,7 @@
 
 local terminal = "kitty"
 local fileManager = "yazi"
-local menu = "wofi --show drun"
+local menu = "qs ipc call launcher toggle" -- lanzador propio de Quickshell (Launcher.qml)
 
 
 ------------------

@@ -16,6 +16,7 @@ local theme = {
     success         = "a6e3a1",
     error           = "f38ba8",
     warning         = "fab387",
+    highlight       = "fab387",
     panel_border    = "313244",
     border_active_2 = "89b4fa",
     border_inactive = "45475a",

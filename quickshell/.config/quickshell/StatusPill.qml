@@ -6,13 +6,15 @@ Rectangle {
 
     property string label: ""
     property color dotColor: Theme.success
+    property color borderColor: Theme.panelBorder
+    property color textColor: Theme.text
 
     implicitWidth: row.implicitWidth + 20
     implicitHeight: 22
     radius: height / 2
     color: "transparent"
     border.width: 1
-    border.color: Theme.panelBorder
+    border.color: root.borderColor
 
     Row {
         id: row
@@ -22,7 +24,7 @@ Rectangle {
         Text {
             anchors.verticalCenter: parent.verticalCenter
             text: root.label
-            color: Theme.text
+            color: root.textColor
             font.family: Theme.font
             font.pixelSize: 9
             font.letterSpacing: 1
