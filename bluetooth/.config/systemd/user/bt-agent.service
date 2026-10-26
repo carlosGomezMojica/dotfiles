@@ -1,0 +1,14 @@
+# Agente de BlueZ para emparejar desde el panel bluetooth de Quickshell.
+# Quickshell no registra agente, y sin uno el emparejamiento se queda a medias
+# (Paired: no) y la conexión no se mantiene. NoInputNoOutput: acepta el
+# emparejamiento "Just Works" (auriculares, altavoces, ratones) sin pedir PIN.
+[Unit]
+Description=Agente de BlueZ (bt-agent, NoInputNoOutput)
+
+[Service]
+ExecStart=/usr/bin/bt-agent --capability=NoInputNoOutput
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=default.target

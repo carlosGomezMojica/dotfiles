@@ -10,6 +10,7 @@ Configuración personal de **Arch Linux + Hyprland**, con una shell propia escri
 | `quickshell/` | `~/.config/quickshell` | Barra superior, cápsula de red, indicadores de volumen y brillo, notificaciones, panel de batería, lanzador, fondo de escritorio y selector de tema |
 | `theme/` | `~/.config/theme`, `~/.local/bin` | Paletas de color, wallpapers por tema y script `theme` para cambiarlos |
 | `kitty/` | `~/.config/kitty` | `kitty.conf` (incluye los colores del tema activo) |
+| `bluetooth/` | `~/.config/systemd/user` | Servicio `bt-agent` (agente de BlueZ para emparejar desde el panel) |
 | `mpd/` | `~/.config/mpd`, `~/.config/systemd/user` | MPD (biblioteca en `~/Música`) y ajuste del servicio `mpd-mpris` |
 | `packages.txt` / `aur.txt` | — | Paquetes oficiales y de AUR |
 
@@ -93,9 +94,9 @@ sudo pacman -S --needed - < packages.txt
 yay -S --needed - < aur.txt
 
 # Enlaces simbólicos (GNU Stow)
-stow hypr quickshell theme kitty
+stow hypr quickshell theme kitty bluetooth
 stow --no-folding mpd          # systemd no lee drop-ins enlazados como directorio
-systemctl --user enable --now mpd mpd-mpris
+systemctl --user enable --now mpd mpd-mpris bt-agent
 ```
 
 - `~/.local/bin` debe estar en el `PATH` para usar el comando `theme`.

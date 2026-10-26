@@ -1,6 +1,7 @@
 base
 base-devel
 bluez
+bluez-tools
 bluez-utils
 brightnessctl
 btrfs-progs
