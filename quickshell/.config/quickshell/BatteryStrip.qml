@@ -1,0 +1,40 @@
+import Quickshell.Services.UPower
+import QtQuick
+
+// Batería en la barra colapsada: 10 segmentos, cada uno representa un 10%
+Row {
+    id: root
+    spacing: 2
+
+    readonly property var device: UPower.displayDevice
+    readonly property real level: device.percentage   // 0..1
+    readonly property int filled: Math.round(level * 10)
+    readonly property color fillColor: level <= 0.2 ? "#f38ba8"   // batería baja
+                                     : "#a6e3a1"
+
+    visible: device.isLaptopBattery
+
+    Repeater {
+        model: 10
+
+        delegate: Item {
+            id: seg
+            required property int index
+            readonly property bool on: index < root.filled
+
+            width: 4
+            height: 9   // misma altura que la cápsula colapsada
+
+            Rectangle {
+                anchors.centerIn: parent
+                width: parent.width
+                height: seg.on ? 5 : 3
+                radius: 0   // estilo cuadrado
+                color: seg.on ? root.fillColor : "#313244"
+
+                Behavior on height { NumberAnimation { duration: 150 } }
+                Behavior on color  { ColorAnimation { duration: 150 } }
+            }
+        }
+    }
+}

@@ -30,7 +30,7 @@ PanelWindow {
     Rectangle {
         id: pill
         readonly property bool expanded: hover.hovered
-	readonly property real collapsedWidth: strip.implicitWidth + 20
+	readonly property real collapsedWidth: collapsedRow.implicitWidth + 20
 
         anchors.horizontalCenter: parent.horizontalCenter
         y: expanded ? 8 : 0
@@ -45,18 +45,28 @@ PanelWindow {
         Behavior on width  { NumberAnimation { duration: 200; easing.type: Easing.OutCubic } }
 	Behavior on height { NumberAnimation { duration: 200; easing.type: Easing.OutCubic } }
 
-	WorkspaceStrip{
-		id: strip
-    		anchors.centerIn: parent
-    		opacity: pill.expanded ? 0 : 1
-    		Behavior on opacity { NumberAnimation { duration: 150 } }
+	// Colapsada: barritas de workspaces + 10 segmentos de batería a la derecha
+	Row {
+		id: collapsedRow
+		anchors.centerIn: parent
+		spacing: 12
+		opacity: pill.expanded ? 0 : 1
+		Behavior on opacity { NumberAnimation { duration: 150 } }
+
+		WorkspaceStrip {}
+		BatteryStrip { anchors.verticalCenter: parent.verticalCenter }
 	}
 
-        Workspaces {
+        // Expandida: puntos de workspaces + icono de batería con porcentaje a la derecha
+        Row {
             id: content
             anchors.centerIn: parent
+            spacing: 16
             opacity: pill.expanded ? 1 : 0
             Behavior on opacity { NumberAnimation { duration: 150 } }
+
+            Workspaces { anchors.verticalCenter: parent.verticalCenter }
+            Battery { anchors.verticalCenter: parent.verticalCenter }
         }
     }
 }
