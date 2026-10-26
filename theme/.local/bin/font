@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+# Cambia la fuente de todo el escritorio (como `theme` con los colores).
+#   font                lista las familias instaladas (* = activa)
+#   font <familia>      la aplica: fontconfig (sans, serif y mono por defecto), kitty,
+#                       GTK (gsettings), Qt/KDE (kdeglobals) y Quickshell (Theme.font)
+set -euo pipefail
+
+dir="$HOME/.config/theme"
+current="$(cat "$dir/font" 2>/dev/null || true)"
+
+# Familias instaladas: el primer nombre de cada fuente, sin repetir
+families() { fc-list : family | cut -d, -f1 | sort -u; }
+
+if [[ $# -eq 0 ]]; then
+    families | while IFS= read -r f; do
+        [[ "$f" == "$current" ]] && echo "* $f" || echo "  $f"
+    done
+    exit 0
+fi
+
+font="$1"
+size="${FONT_SIZE:-11}"
+if ! families | grep -qxF "$font"; then
+    echo "font: no está instalada la familia '$font'" >&2
+    exit 1
+fi
+
+echo "$font" > "$dir/font"
+
+# fontconfig: la familia por delante en sans-serif, serif y monospace (la usan el
+# navegador y casi todas las apps que no fijan la suya)
+conf="$HOME/.config/fontconfig/conf.d/50-theme-font.conf"
+mkdir -p "$(dirname "$conf")"
+{
+    echo '<?xml version="1.0"?>'
+    echo '<!DOCTYPE fontconfig SYSTEM "fonts.dtd">'
+    echo "<!-- Generado por \`font\`: no editar -->"
+    echo '<fontconfig>'
+    for generic in sans-serif serif monospace; do
+        echo "  <alias binding=\"strong\"><family>$generic</family><prefer><family>$font</family></prefer></alias>"
+    done
+    echo '</fontconfig>'
+} > "$conf"
+fc-cache -f >/dev/null 2>&1 || true
+
+# kitty (incluido desde kitty.conf); SIGUSR1 recarga la configuración
+kitty_font="$HOME/.config/kitty/current-font.conf"
+mkdir -p "$(dirname "$kitty_font")"
+printf '# Generado por `font`: no editar\nfont_family %s\n' "$font" > "$kitty_font"
+pkill -USR1 -x kitty || true
+
+# GTK 3/4 (dconf)
+if command -v gsettings >/dev/null; then
+    gsettings set org.gnome.desktop.interface font-name "$font $size" || true
+    gsettings set org.gnome.desktop.interface monospace-font-name "$font $size" || true
+    gsettings set org.gnome.desktop.interface document-font-name "$font $size" || true
+fi
+
+# Qt/KDE (Dolphin…): formato de QFont "familia,tamaño,-1,5,400,0,0,0,0,0"
+if command -v kwriteconfig6 >/dev/null; then
+    for key in font fixed menuFont toolBarFont smallestReadableFont; do
+        kwriteconfig6 --file kdeglobals --group General --key "$key" "$font,$size,-1,5,400,0,0,0,0,0"
+    done
+    kwriteconfig6 --file kdeglobals --group WM --key activeFont "$font,$size,-1,5,400,0,0,0,0,0"
+fi
+
+# Quickshell lo detecta solo (Theme.qml vigila ~/.config/theme/font)
+echo "fuente activa: $font"

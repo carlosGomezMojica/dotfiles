@@ -27,8 +27,19 @@ Singleton {
     readonly property color yellow: colors.yellow
     readonly property color panelBorder: colors.panel_border
 
-    // Fuente de los paneles (Nerd Font: incluye iconos)
-    readonly property string font: "JetBrainsMono Nerd Font"
+    // Fuente de todo el escritorio (la elige el script `font`, p. ej. con /font en el
+    // lanzador). Conviene una Nerd Font: los iconos de los paneles son sus glifos.
+    property string font: "JetBrainsMono Nerd Font"
+
+    FileView {
+        path: root.dir + "/font"
+        watchChanges: true
+        onFileChanged: reload()
+        onLoaded: {
+            const f = text().trim()
+            if (f !== "") root.font = f
+        }
+    }
 
     // Nombre del tema activo (lo escribe el script `theme`)
     FileView {

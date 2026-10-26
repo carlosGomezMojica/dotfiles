@@ -5,6 +5,7 @@ import Quickshell.Wayland
 import QtQuick
 
 // Lanzador de aplicaciones. Se abre con `qs ipc call launcher toggle` (SUPER + A).
+// Comandos: "/font" lista las fuentes instaladas y aplica la elegida (script `font`).
 PanelWindow {
     id: root
 
@@ -23,6 +24,29 @@ PanelWindow {
         .sort((a, b) => a.name.localeCompare(b.name))
     readonly property var results: search(query)
 
+    // --- /font: selector de fuente ---
+    readonly property bool fontMode: norm(query).startsWith("/font")
+    // { name, isFont, active, comment } por familia instalada (lo da el script `font`)
+    property var fonts: []
+    readonly property string fontScript: Quickshell.env("HOME") + "/.local/bin/font"
+
+    onFontModeChanged: if (fontMode) fontList.running = true
+
+    Process {
+        id: fontList
+        command: [root.fontScript]
+        stdout: StdioCollector {
+            onStreamFinished: {
+                root.fonts = text.split("\n").filter(l => l.trim() !== "").map(l => ({
+                    name: l.slice(2),
+                    isFont: true,
+                    active: l.startsWith("*"),
+                    comment: "Aa Bb Cc 0123 — El veloz murciélago hindú"
+                }))
+            }
+        }
+    }
+
     function open() {
         query = ""
         input.text = ""
@@ -40,6 +64,11 @@ PanelWindow {
 
     function launch(entry) {
         if (!entry) return
+        if (entry.isFont) {
+            Quickshell.execDetached([fontScript, entry.name])
+            close()
+            return
+        }
         // execute() no abre una terminal para las apps de terminal: hay que envolverlas
         if (entry.runInTerminal) {
             Quickshell.execDetached({
@@ -72,9 +101,15 @@ PanelWindow {
     }
 
     function search(text) {
-        const q = norm(text.trim())
-        if (q === "") return apps
-        return apps
+        let q = norm(text.trim())
+        let items = apps
+        // "/font texto": buscar entre las fuentes, la activa primero
+        if (q.startsWith("/font")) {
+            q = q.slice(5).trim()
+            items = fonts.slice().sort((a, b) => b.active - a.active)
+        }
+        if (q === "") return items
+        return items
             .map(e => ({ entry: e, score: score(e, q) }))
             .filter(r => r.score > 0)
             .sort((a, b) => b.score - a.score || a.entry.name.localeCompare(b.entry.name))
@@ -82,6 +117,7 @@ PanelWindow {
     }
 
     function category(entry) {
+        if (entry.isFont) return entry.active ? "ACTIVA" : "FUENTE"
         const cats = Array.from(entry.categories || [])
         const map = [
             ["Development", "DESARROLLO"], ["Game", "JUEGOS"], ["Graphics", "GRÁFICOS"],
@@ -106,6 +142,11 @@ PanelWindow {
         function toggle(): void { root.toggle() }
         function open(): void { root.open() }
         function close(): void { root.close() }
+        // Abre con un texto ya escrito, p. ej. `qs ipc call launcher openWith /font`
+        function openWith(text: string): void {
+            root.open()
+            input.text = text
+        }
     }
 
     // En el monitor enfocado
@@ -268,19 +309,20 @@ PanelWindow {
                     Image {
                         id: icon
                         anchors.fill: parent
-                        source: Quickshell.iconPath(row.modelData.icon, true)
+                        source: row.modelData.isFont ? "" : Quickshell.iconPath(row.modelData.icon, true)
                         sourceSize: Qt.size(56, 56)
                         asynchronous: true
                         visible: status === Image.Ready
                     }
 
+                    // Fuentes (/font): "Aa" con esa misma fuente
                     Text {
                         anchors.centerIn: parent
                         visible: !icon.visible
-                        text: String.fromCodePoint(0xF08C6)   // nf-md-application
-                        color: Theme.muted
-                        font.family: Theme.font
-                        font.pixelSize: 22
+                        text: row.modelData.isFont ? "Aa" : String.fromCodePoint(0xF08C6)   // nf-md-application
+                        color: row.modelData.isFont ? Theme.accent : Theme.muted
+                        font.family: row.modelData.isFont ? row.modelData.name : Theme.font
+                        font.pixelSize: row.modelData.isFont ? 18 : 22
                     }
                 }
 
@@ -296,7 +338,7 @@ PanelWindow {
                         width: parent.width
                         text: row.modelData.name
                         color: Theme.text
-                        font.family: Theme.font
+                        font.family: row.modelData.isFont ? row.modelData.name : Theme.font
                         font.pixelSize: 14
                         elide: Text.ElideRight
                     }
@@ -306,7 +348,7 @@ PanelWindow {
                         visible: text !== ""
                         text: row.modelData.comment || row.modelData.genericName || ""
                         color: Theme.muted
-                        font.family: Theme.font
+                        font.family: row.modelData.isFont ? row.modelData.name : Theme.font
                         font.pixelSize: 10
                         elide: Text.ElideRight
                     }
@@ -326,7 +368,7 @@ PanelWindow {
 
                     StatusPill {
                         visible: row.active
-                        label: "ABRIR [TAB]"
+                        label: row.modelData.isFont ? "APLICAR [TAB]" : "ABRIR [TAB]"
                         dotColor: Theme.highlight
                         borderColor: Theme.highlight
                         textColor: Theme.highlight
@@ -350,7 +392,9 @@ PanelWindow {
                 anchors.centerIn: parent
                 text: root.results.length === 0
                     ? "SIN RESULTADOS"
-                    : root.results.length + " RESULTADOS  ·  ↑↓ MOVER  ·  ENTER ABRIR  ·  ESC CERRAR"
+                    : root.fontMode
+                    ? root.results.length + " FUENTES  ·  ↑↓ MOVER  ·  ENTER APLICAR  ·  ESC CERRAR"
+                    : root.results.length + " RESULTADOS  ·  ↑↓ MOVER  ·  ENTER ABRIR  ·  ESC CERRAR  ·  /font FUENTES"
                 color: Theme.muted
                 font.family: Theme.font
                 font.pixelSize: 9

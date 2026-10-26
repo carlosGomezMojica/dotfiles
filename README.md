@@ -61,7 +61,10 @@ theme gruvbox-dark                      # activa un tema con su primer wallpaper
 theme gruvbox-dark gruvbox-dark/x.png   # activa un tema con ese wallpaper
 ```
 
-Temas incluidos: **Catppuccin Mocha** y **Gruvbox Dark**. Para crear uno, copia un `.json` de `palettes/`, cambia los hex y crea su carpeta en `wallpapers/`.
+Temas incluidos: **Catppuccin Mocha** y **Gruvbox Dark**.
+
+### Fuente
+Una sola fuente para todo el escritorio (hoy **JetBrainsMono Nerd Font**): Quickshell, kitty, apps GTK y Qt/KDE, y la fuente por defecto de fontconfig (sans, serif y mono) que usan el navegador y el resto. Para cambiarla, escribe **`/font`** en el lanzador (`SUPER + A`): salen las fuentes instaladas, cada una con su tipografía; `Enter` la aplica. Desde la terminal: `font` (lista) y `font "<familia>"`. Para crear uno, copia un `.json` de `palettes/`, cambia los hex y crea su carpeta en `wallpapers/`.
 
 ## Atajos principales (`SUPER` = mod)
 
