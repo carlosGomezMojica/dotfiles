@@ -14,6 +14,7 @@ Configuración personal de **Arch Linux + Hyprland**, con una shell propia escri
 | `packages.txt` / `aur.txt` | — | Paquetes oficiales y de AUR |
 
 ### Barra (Quickshell)
+- **Uso de IA (Claude Code)** a la izquierda de los workspaces: plegada, 5 segmentos naranjas con el uso de la sesión; expandida, un robot con el %. Al pulsarlo, un panel al estilo del de batería con la sesión de 5 h y su reinicio, el uso semanal, los tokens (sesión, hoy y semana) y el próximo reinicio semanal. Los límites salen de la API de uso de Anthropic con la sesión de Claude Code (como en Omarchy) y los tokens de sus registros locales.
 - Cápsula superior que **se auto-oculta**: oculta muestra barritas finas de los 9 workspaces y 10 segmentos de batería; al pasar el ratón se expande con puntos clicables y el icono de pila con el porcentaje.
 - **Panel de batería**: al pulsar la pila se despliega una tarjeta con el nivel en un anillo de puntos, tiempo restante, salud (capacidad real frente a la de diseño), ciclos de carga, consumo y selector de **perfil de energía** (ahorro / equilibrado / rendimiento, vía `power-profiles-daemon`).
 

@@ -16,8 +16,8 @@ PanelWindow {
     // Solo el hotspot recibe el mouse; el resto deja pasar los clicks
     mask: Region { item: hotspot }
 
-    // Expandida al pasar el ratón o mientras el panel de batería está abierto
-    readonly property bool expanded: hover.hovered || batteryPanel.open
+    // Expandida al pasar el ratón o mientras el panel de batería o el de IA está abierto
+    readonly property bool expanded: hover.hovered || batteryPanel.open || aiPanel.open
 
     // Zona de detección: estable, sin animaciones
     Item {
@@ -53,7 +53,7 @@ PanelWindow {
         Behavior on width  { NumberAnimation { duration: 200; easing.type: Easing.OutCubic } }
 	Behavior on height { NumberAnimation { duration: 200; easing.type: Easing.OutCubic } }
 
-	// Colapsada: barritas de workspaces + 10 segmentos de batería a la derecha
+	// Colapsada: uso de IA a la izquierda, barritas de workspaces y 10 segmentos de batería
 	Row {
 		id: collapsedRow
 		anchors.centerIn: parent
@@ -61,11 +61,12 @@ PanelWindow {
 		opacity: pill.expanded ? 0 : 1
 		Behavior on opacity { NumberAnimation { duration: 150 } }
 
+		AiStrip { anchors.verticalCenter: parent.verticalCenter }
 		WorkspaceStrip {}
 		BatteryStrip { anchors.verticalCenter: parent.verticalCenter }
 	}
 
-        // Expandida: puntos de workspaces + icono de batería con porcentaje a la derecha
+        // Expandida: robot (IA), puntos de workspaces e icono de batería con porcentaje
         Row {
             id: content
             anchors.centerIn: parent
@@ -75,6 +76,11 @@ PanelWindow {
             enabled: pill.expanded
             Behavior on opacity { NumberAnimation { duration: 150 } }
 
+            AiButton {
+                id: aiButton
+                anchors.verticalCenter: parent.verticalCenter
+                onClicked: aiPanel.toggle()
+            }
             Workspaces { anchors.verticalCenter: parent.verticalCenter }
             Battery {
                 id: battery
@@ -87,5 +93,10 @@ PanelWindow {
     BatteryPanel {
         id: batteryPanel
         anchorItem: battery
+    }
+
+    AiPanel {
+        id: aiPanel
+        anchorItem: aiButton
     }
 }
