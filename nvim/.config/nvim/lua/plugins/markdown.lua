@@ -1,8 +1,26 @@
 -- Markdown: render-markdown y markdown-preview vienen del extra lang.markdown de LazyVim.
 -- Aquí: imágenes en el buffer (snacks.image, kitty) y pegar imágenes del portapapeles (img-clip)
 local vault = vim.fn.expand("~/Documentos/notas")
+-- Reglas de markdownlint compartidas por el linter y el formateo al guardar
+local mdlint_config = vim.fn.stdpath("config") .. "/.markdownlint.yaml"
 
 return {
+  {
+    "mfussenegger/nvim-lint",
+    opts = {
+      linters = {
+        ["markdownlint-cli2"] = { args = { "--config", mdlint_config, "-" } },
+      },
+    },
+  },
+  {
+    "stevearc/conform.nvim",
+    opts = {
+      formatters = {
+        ["markdownlint-cli2"] = { prepend_args = { "--config", mdlint_config } },
+      },
+    },
+  },
   {
     "MeanderingProgrammer/render-markdown.nvim",
     opts = {

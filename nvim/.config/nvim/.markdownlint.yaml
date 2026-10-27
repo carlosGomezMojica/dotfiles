@@ -1,0 +1,5 @@
+# Reglas de markdownlint para nvim (nvim-lint y el formateo al guardar de conform).
+# Lista de reglas: https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md
+default: true
+# Longitud de línea: con `wrap` activo en markdown, la prosa va en líneas largas
+MD013: false
