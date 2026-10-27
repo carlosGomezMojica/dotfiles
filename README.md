@@ -99,6 +99,7 @@ zsh con el prompt **powerlevel10k** en el estilo que elijas con `p10k configure`
 - Colores del tema activo (catppuccin, gruvbox; un tema nuevo sale con su paleta): al cambiar de tema, los nvim abiertos cambian al momento.
 - Pantalla de inicio con **NEOVIM** en grande, cada letra de un color del tema (rojo, naranja, amarillo, verde, aqua y azul).
 - Portapapeles compartido con el sistema: `y` copia al del escritorio (aparece en el historial de `SUPER + SHIFT + V`) y `p` pega lo copiado en cualquier app.
+- **oil.nvim**: `-` (o `nvim <carpeta>`) abre el directorio como un buffer, con los archivos ocultos visibles (`g.` los oculta); renombrar, mover o borrar es editar las líneas y guardar.
 - LSP, formateo y resaltado para Lua (Hyprland), QML (Quickshell), bash/zsh, TypeScript, JSON y Markdown.
 - Splits como el foco de Hyprland en Dvorak: `Ctrl + H/S/N/T` = izquierda/derecha/arriba/abajo. Guardar: `Ctrl + S` en modo insertar o `:w`.
 
