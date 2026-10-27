@@ -35,6 +35,7 @@ limine
 linux
 linux-firmware
 linux-lts
+mermaid-cli
 mise
 mkinitcpio
 mpc

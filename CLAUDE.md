@@ -28,6 +28,8 @@ Cada directorio de primer nivel es un paquete de `stow` que replica la ruta rela
 - `bluetooth/.config/systemd/user/bt-agent.service` → agente de BlueZ (`bt-agent --capability=NoInputNoOutput`, de `bluez-tools`). Quickshell no registra agente y sin uno el emparejamiento se queda a medias (`Paired: no`) y la conexión se cae. Activar con `systemctl --user enable --now bt-agent`.
 - `mpd/.config/mpd/mpd.conf` y `mpd/.config/systemd/user/mpd-mpris.service.d/restart.conf` → **enlazar con `stow --no-folding mpd`**: systemd ignora un directorio `*.service.d` que sea un symlink (solo acepta el archivo enlazado dentro de un directorio real)
 
+`COMANDOS.md` (raíz) es la referencia de todos los atajos y comandos (Hyprland, Quickshell e IPC, scripts, zsh, Neovim): al añadir o cambiar uno, actualízala también.
+
 `~/.config/hypr` y `~/.config/quickshell` son symlinks a este repo, así que editar aquí aplica directamente en el sistema. Para añadir una nueva herramienta, crea `<herramienta>/.config/<herramienta>/...` y enlázala:
 
 ```sh
