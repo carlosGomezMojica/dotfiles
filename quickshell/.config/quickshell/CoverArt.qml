@@ -33,7 +33,8 @@ Item {
     Image {
         id: image
         anchors.fill: parent
-        source: root.source
+        // Una ruta suelta (p. ej. el image-path de una notificación) se tomaría por un icono
+        source: root.source.startsWith("/") ? "file://" + root.source : root.source
         sourceSize: Qt.size(400, 400)
         fillMode: Image.PreserveAspectCrop
         asynchronous: true

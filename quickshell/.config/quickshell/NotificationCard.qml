@@ -161,7 +161,8 @@ Rectangle {
                 id: image
                 width: 44
                 height: 44
-                source: root.notification?.image ?? ""
+                // Una ruta suelta (image-path) se tomaría por un nombre de icono
+                source: (img => img.startsWith("/") ? "file://" + img : img)(root.notification?.image ?? "")
                 sourceSize: Qt.size(88, 88)
                 fillMode: Image.PreserveAspectCrop
                 visible: !root.screenshot && source.toString() !== "" && status === Image.Ready
