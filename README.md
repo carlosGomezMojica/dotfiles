@@ -10,6 +10,7 @@ Configuración personal de **Arch Linux + Hyprland**, con una shell propia escri
 | `quickshell/` | `~/.config/quickshell` | Barra superior, cápsula de red, indicadores de volumen y brillo, notificaciones, panel de batería, lanzador, fondo de escritorio y selector de tema |
 | `theme/` | `~/.config/theme`, `~/.local/bin` | Paletas de color, wallpapers por tema y script `theme` para cambiarlos |
 | `kitty/` | `~/.config/kitty` | `kitty.conf` (incluye los colores del tema activo) |
+| `lazygit/` | `~/.config/lazygit` | lazygit con iconos Nerd y los colores ANSI de la terminal (siguen al tema) |
 | `zsh/` | `~/.zshrc`, `~/.config/zsh` | zsh con **powerlevel10k**, autosugerencias y resaltado de sintaxis, con los colores del tema |
 | `bluetooth/` | `~/.config/systemd/user` | Servicio `bt-agent` (agente de BlueZ para emparejar desde el panel) |
 | `mpd/` | `~/.config/mpd`, `~/.config/systemd/user` | MPD (biblioteca en `~/Música`) y ajuste del servicio `mpd-mpris` |
@@ -81,6 +82,9 @@ Temas incluidos: **Catppuccin Mocha** y **Gruvbox Dark**.
 ### Terminal (zsh + powerlevel10k)
 zsh con el prompt **powerlevel10k** en el estilo que elijas con `p10k configure` (lean, classic, rainbow…), pero con los colores del tema: directorio en el color de acento, git en verde / naranja / azul / rojo (limpio / modificado / sin seguimiento / conflicto), errores en rojo y duración en amarillo. Las sugerencias del historial (`→` para aceptar) y el resaltado de la línea de comandos también siguen el tema. Al cambiar de tema, las terminales abiertas cambian en el siguiente prompt.
 
+- `cat` → **bat** (resaltado y números, colores de la terminal), `n` → **nvim**, `lg` → **lazygit** (revisar, hacer commit y subir; sus colores también siguen al tema).
+- **zoxide**: `z <parte del nombre>` salta a la carpeta más visitada que coincida; `zi` la elige de una lista con fzf.
+
 ### Fuente
 Una sola fuente para todo el escritorio (hoy **JetBrainsMono Nerd Font**): Quickshell, kitty, apps GTK y Qt/KDE, y la fuente por defecto de fontconfig (sans, serif y mono) que usan el navegador y el resto. Para cambiarla, escribe **`/font`** en el lanzador (`SUPER + A`): salen las fuentes instaladas, cada una con su tipografía; `Enter` la aplica. Desde la terminal: `font` (lista) y `font "<familia>"`. Para crear uno, copia un `.json` de `palettes/`, cambia los hex y crea su carpeta en `wallpapers/`.
 
@@ -118,7 +122,7 @@ sudo pacman -S --needed - < packages.txt
 yay -S --needed - < aur.txt
 
 # Enlaces simbólicos (GNU Stow)
-stow hypr quickshell theme kitty bluetooth zsh
+stow hypr quickshell theme kitty bluetooth zsh lazygit
 stow --no-folding mpd          # systemd no lee drop-ins enlazados como directorio
 systemctl --user enable --now mpd mpd-mpris bt-agent hypridle
 chsh -s /usr/bin/zsh           # zsh por defecto; luego, en una terminal nueva: p10k configure

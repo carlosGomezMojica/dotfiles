@@ -1,0 +1,33 @@
+# lazygit: colores con los nombres ANSI de la terminal (no hex), así siguen al tema
+# activo igual que kitty: green = success, blue = info, yellow, red = error...
+gui:
+  nerdFontsVersion: "3"
+  showIcons: true
+  border: rounded
+  theme:
+    activeBorderColor:
+      - green
+      - bold
+    inactiveBorderColor:
+      - default
+    searchingActiveBorderColor:
+      - yellow
+      - bold
+    optionsTextColor:
+      - blue
+    selectedLineBgColor:
+      - black
+    inactiveViewSelectedLineBgColor:
+      - bold
+    cherryPickedCommitFgColor:
+      - blue
+    cherryPickedCommitBgColor:
+      - cyan
+    markedBaseCommitFgColor:
+      - blue
+    markedBaseCommitBgColor:
+      - yellow
+    unstagedChangesColor:
+      - red
+    defaultFgColor:
+      - default
