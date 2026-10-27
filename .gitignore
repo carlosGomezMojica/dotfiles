@@ -10,3 +10,6 @@ id_*
 # Generado por el script theme
 kitty/.config/kitty/current-theme.conf
 kitty/.config/kitty/current-font.conf
+
+# Ajustes locales de Claude Code (hooks de code-preview.nvim)
+.claude/settings.local.json
