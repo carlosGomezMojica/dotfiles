@@ -70,6 +70,12 @@ hl.env("HYPRCURSOR_SIZE", "24")
 -- está en ~/.config/environment.d/qt.conf, pero lo que lanza Hyprland (Quickshell y, desde su
 -- lanzador, las apps) hereda el entorno de Hyprland, no el de systemd
 hl.env("QT_QPA_PLATFORMTHEME", "kde")
+-- Shims de mise (node, flutter, dart…) para lo que se abre desde el lanzador (nvim y sus LSP).
+-- Mismo motivo que arriba: también está en ~/.config/environment.d/mise.conf
+local miseShims = os.getenv("HOME") .. "/.local/share/mise/shims"
+if not (os.getenv("PATH") or ""):find(miseShims, 1, true) then
+    hl.env("PATH", miseShims .. ":" .. (os.getenv("PATH") or ""))
+end
 
 
 -----------------------
