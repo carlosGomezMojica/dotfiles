@@ -6,6 +6,7 @@
 local terminal = "kitty"
 local fileManager = terminal .. " -e yazi" -- yazi es de terminal: necesita abrirse dentro de kitty
 local menu = "qs ipc call launcher toggle" -- lanzador propio de Quickshell (Launcher.qml)
+local clipboard = "qs ipc call clipboard toggle" -- historial del portapapeles (Clipboard.qml, cliphist)
 local themePicker = "qs ipc call themes toggle" -- selector de tema y wallpaper (ThemePicker.qml)
 local dismissNotifications = "qs ipc call notifications dismissAll" -- cerrar notificaciones (Notifications.qml)
 -- Capturas: hyprshot + notificación con editar (satty) / copiar / carpeta. Ruta completa:
@@ -70,6 +71,9 @@ hl.bind(mainMod .. " + SHIFT + S", hl.dsp.focus({ workspace = "e+1"}))
 -- copiar / pegar con Super + C/V (envia Ctrl + Shift + C/V a la ventana activa)
 hl.bind(mainMod .. " + C", hl.dsp.send_shortcut({ mods = "CTRL SHIFT", key = "C"}))
 hl.bind(mainMod .. " + V", hl.dsp.send_shortcut({ mods = "CTRL SHIFT", key = "V"}))
+
+-- Historial del portapapeles (elige una entrada y pasa a ser lo copiado; pegar con SUPER + V)
+hl.bind(mainMod .. " + SHIFT + V", hl.dsp.exec_cmd(clipboard))
 
 -- Move / resize con click de mouse
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(),{mouse = true})

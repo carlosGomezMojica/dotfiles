@@ -41,6 +41,10 @@ Configuración personal de **Arch Linux + Hyprland**, con una shell propia escri
 - Reproduciendo: carátula con reflejo, título, álbum y artista, tiempo (clic para saltar) y anterior / reproducir-pausa / siguiente (también `←` `→` y `Espacio`).
 - Carátulas: `cover.jpg`/`folder.jpg`/`front.jpg` de la carpeta del álbum o la imagen incrustada en el archivo.
 
+### Portapapeles
+- `SUPER + SHIFT + V` abre el historial de todo lo copiado (texto, enlaces e imágenes, vía **cliphist**), con el diseño del lanzador: buscador, lista y vista previa.
+- `↑` `↓` o `Ctrl+N` / `Ctrl+T` para moverte, `Enter` o clic copia la entrada (pégala con `SUPER + V` o `Ctrl+V`), `Shift+Supr` la borra del historial, `Esc` cierra.
+
 ### Capturas de pantalla
 - `Print` (región), `SHIFT + Print` (ventana), `CTRL + Print` (pantalla) o `SUPER + SHIFT + P` (región): **hyprshot** guarda la captura en `~/Imágenes/Capturas` y la copia al portapapeles.
 - Aparece una notificación con la vista previa y tres acciones: **EDITAR** (abre **satty** para anotarla; al guardar o copiar se sobrescribe y va al portapapeles), **COPIAR** y **CARPETA**. Clic en la tarjeta también edita.
@@ -77,6 +81,7 @@ Una sola fuente para todo el escritorio (hoy **JetBrainsMono Nerd Font**): Quick
 |---|---|
 | `SUPER + Enter` | Terminal (kitty) |
 | `SUPER + A` | Lanzador de aplicaciones |
+| `SUPER + SHIFT + V` | Historial del portapapeles |
 | `SUPER + W` | Selector de tema y wallpaper |
 | `SUPER + ,` | Cerrar todas las notificaciones |
 | `Print` / `SHIFT + Print` / `CTRL + Print` | Captura de región / ventana / pantalla completa (también `SUPER + SHIFT + P`: región) |

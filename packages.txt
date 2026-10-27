@@ -5,6 +5,7 @@ bluez-tools
 bluez-utils
 brightnessctl
 btrfs-progs
+cliphist
 dolphin
 efibootmgr
 git

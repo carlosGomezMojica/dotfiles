@@ -16,6 +16,7 @@ ShellRoot {
 
 	// Una sola instancia; se muestran en el monitor enfocado
 	Launcher {}
+	Clipboard {}
 	ThemePicker {}
 	Notifications {}
 }

@@ -50,6 +50,9 @@ hl.monitor({
 
 hl.on("hyprland.start", function ()
     hl.exec_cmd("uwsm app -- quickshell")
+    -- Historial del portapapeles (cliphist): guardar todo lo que se copie, texto e imágenes
+    hl.exec_cmd("wl-paste --type text --watch cliphist store")
+    hl.exec_cmd("wl-paste --type image --watch cliphist store")
     -- El bluetooth arranca apagado (bluez lo enciende solo por AutoEnable); se enciende desde la cápsula de red
     hl.exec_cmd("bluetoothctl power off")
 end)
