@@ -11,5 +11,5 @@ id_*
 kitty/.config/kitty/current-theme.conf
 kitty/.config/kitty/current-font.conf
 
-# Ajustes locales de Claude Code (hooks de code-preview.nvim)
+# Ajustes locales de Claude Code
 .claude/settings.local.json

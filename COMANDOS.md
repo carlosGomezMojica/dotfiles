@@ -183,14 +183,19 @@ Las imágenes y los bloques ` ```mermaid ` se dibujan dentro del buffer (kitty),
 | `<leader>Fd` / `<leader>Fe` | Flutter: dispositivos / emuladores |
 | `<leader>Fo` / `<leader>Fc` | Flutter: árbol de widgets / log |
 
-### Claude Code (code-preview.nvim)
+### Claude Code (claudecode.nvim)
 
-| Comando | Función |
+| Atajo / comando | Función |
 | --- | --- |
-| `:CodePreviewInstallClaudeCodeHooks` | Activar las vistas previas en el proyecto (luego reiniciar Claude Code) |
-| `:CodePreviewUninstallClaudeCodeHooks` | Desactivarlas |
-| `<leader>dq` / `:CodePreviewCloseDiff` | Cerrar el diff abierto |
-| `:CodePreviewStatus` | Estado de la conexión y los hooks |
+| `<leader>ac` | Abrir o cerrar Claude Code en un panel lateral |
+| `<leader>af` | Ir al panel de Claude Code |
+| `<leader>ar` / `<leader>aC` | Abrir Claude Code retomando una sesión (`--resume`) / la última (`--continue`) |
+| `<leader>ab` | Añadir el archivo actual al contexto |
+| `<leader>as` | Enviar la selección (visual) o el archivo bajo el cursor (en oil) |
+| `<leader>aa` / `:w` | Aceptar el diff propuesto |
+| `<leader>ad` | Rechazar el diff propuesto |
+| `/ide` (en Claude Code) | Conectar un Claude Code abierto en otra terminal con este nvim |
+| `:ClaudeCodeStatus` | Estado de la conexión |
 
 ### Mantenimiento
 
