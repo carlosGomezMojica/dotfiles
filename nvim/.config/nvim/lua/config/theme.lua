@@ -7,6 +7,8 @@ local dir = vim.fn.expand("~/.config/theme")
 M.schemes = {
   ["catppuccin-mocha"] = "catppuccin-mocha",
   ["gruvbox-dark"] = "gruvbox",
+  ["gruvbox-light"] = "gruvbox",
+  ["kanagawa"] = "kanagawa-wave",
 }
 
 local function read(path)
@@ -34,6 +36,16 @@ function M.palette(name)
   return ok and type(palette) == "table" and palette or nil
 end
 
+-- "light" o "dark" según la luminancia del bg de la paleta (gruvbox elige variante con 'background')
+function M.background(name)
+  local r, g, b = ((M.palette(name) or {}).bg or ""):match("#(%x%x)(%x%x)(%x%x)")
+  if not r then
+    return "dark"
+  end
+  local l = 0.299 * tonumber(r, 16) + 0.587 * tonumber(g, 16) + 0.114 * tonumber(b, 16)
+  return l > 128 and "light" or "dark"
+end
+
 -- Un color por letra de la cabecera NEOVIM del dashboard (grupos DashboardLetter1..6)
 M.header_colors = { "error", "warning", "yellow", "success", "aqua", "info" }
 
@@ -49,7 +61,7 @@ end
 function M.mermaid_config()
   local p = M.palette() or {}
   local vars = {
-    darkMode = true,
+    darkMode = M.background() == "dark",
     background = p.bg,
     fontFamily = vim.trim(read(dir .. "/font") or ""),
     primaryColor = p.surface,
@@ -115,6 +127,7 @@ end
 function M.apply()
   local name = M.current()
   local scheme = M.schemes[name]
+  vim.o.background = M.background(name)
   if scheme and pcall(vim.cmd.colorscheme, scheme) then
     return
   end
@@ -144,7 +157,7 @@ function M.watch()
     group = group,
     callback = function()
       local scheme = M.schemes[M.current()] or ("theme-" .. M.current())
-      if vim.g.colors_name ~= scheme then
+      if vim.g.colors_name ~= scheme or vim.o.background ~= M.background() then
         M.apply()
       end
     end,

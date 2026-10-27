@@ -9,8 +9,14 @@ return {
   {
     "ellisonleao/gruvbox.nvim",
     lazy = true,
-    -- Fondo "hard" (#1d2021), como el bg de la paleta gruvbox-dark
+    -- Contraste "hard": #1d2021 en oscuro y #f9f5d7 en claro, como el bg de gruvbox-dark/-light
     opts = { contrast = "hard" },
+  },
+  {
+    "rebelot/kanagawa.nvim",
+    lazy = true,
+    -- Variante "wave" (#1f1f28), como el bg de la paleta kanagawa
+    opts = { theme = "wave" },
   },
   -- Respaldo para temas sin colorscheme propio: se genera con la paleta
   { "nvim-mini/mini.base16", lazy = true },
