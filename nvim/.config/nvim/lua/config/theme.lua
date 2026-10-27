@@ -28,10 +28,27 @@ function M.colorscheme()
   return M.schemes[M.current()]
 end
 
+-- Paleta del tema (JSON plano "token": "#rrggbb"); nil si no se puede leer
+function M.palette(name)
+  local ok, palette = pcall(vim.json.decode, read(dir .. "/palettes/" .. (name or M.current()) .. ".json") or "")
+  return ok and type(palette) == "table" and palette or nil
+end
+
+-- Un color por letra de la cabecera NEOVIM del dashboard (grupos DashboardLetter1..6)
+M.header_colors = { "error", "warning", "yellow", "success", "aqua", "info" }
+
+function M.highlights()
+  local palette = M.palette() or {}
+  local normal = vim.api.nvim_get_hl(0, { name = "Normal", link = false }).fg
+  for i, token in ipairs(M.header_colors) do
+    vim.api.nvim_set_hl(0, "DashboardLetter" .. i, { fg = palette[token] or normal })
+  end
+end
+
 -- mini.base16 con los colores de terminal de la paleta (mismo orden que base16)
 local function base16(name)
-  local ok, palette = pcall(vim.json.decode, read(dir .. "/palettes/" .. name .. ".json") or "")
-  if not ok or type(palette) ~= "table" then
+  local palette = M.palette(name)
+  if not palette then
     return false
   end
   local c = function(n)
@@ -84,9 +101,13 @@ function M.watch()
       vim.schedule(M.apply)
     end
   end)
+  local group = vim.api.nvim_create_augroup("theme_sync", { clear = true })
+  -- Cada colorscheme borra los grupos propios: se vuelven a definir con la paleta activa
+  M.highlights()
+  vim.api.nvim_create_autocmd("ColorScheme", { group = group, callback = M.highlights })
   -- Respaldo por si el aviso se pierde (p. ej. si `current` se sustituye por otro archivo)
   vim.api.nvim_create_autocmd("FocusGained", {
-    group = vim.api.nvim_create_augroup("theme_sync", { clear = true }),
+    group = group,
     callback = function()
       local scheme = M.schemes[M.current()] or ("theme-" .. M.current())
       if vim.g.colors_name ~= scheme then
