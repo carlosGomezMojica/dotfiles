@@ -12,6 +12,7 @@ Configuración personal de **Arch Linux + Hyprland**, con una shell propia escri
 | `kitty/` | `~/.config/kitty` | `kitty.conf` (incluye los colores del tema activo) |
 | `nvim/` | `~/.config/nvim` | Neovim con **LazyVim**, los colores del tema (cambian en caliente) y LSP para Lua, QML, shell y web |
 | `lazygit/` | `~/.config/lazygit` | lazygit con iconos Nerd y los colores ANSI de la terminal (siguen al tema) |
+| `mise/` | `~/.config/mise`, `~/.config/environment.d` | Versiones de node y Flutter con **mise**, visibles en toda la sesión (no solo en zsh) |
 | `qt/` | `~/.config/environment.d` | `QT_QPA_PLATFORMTHEME=kde`: Dolphin y apps Qt/KDE con los colores del tema |
 | `yazi/` | `~/.config/yazi` | yazi: los PDF se abren con zathura |
 | `zathura/` | `~/.config/zathura` | zathura (visor de PDF) con los colores del tema |
@@ -105,7 +106,7 @@ zsh con el prompt **powerlevel10k** en el estilo que elijas con `p10k configure`
 - **Corrector de ortografía** en español e inglés en markdown, texto y commits (`]s` siguiente error, `z=` sugerencias, `zg` añadir al diccionario). El linter de markdown avisa de títulos o tablas sin línea en blanco y otros fallos de formato, y al guardar los corrige solo.
 - **Notas de Obsidian** en `~/Documentos/notas` (se puede abrir también con la app): `<leader>on` nueva nota, `<leader>oo` buscar, `<leader>os` buscar texto, `<leader>ot` nota de hoy (en `diario/`), `<leader>ob` backlinks, `<leader>og` etiquetas, `<leader>oc` casilla; `[[` autocompleta enlaces y `Enter` / `gf` los siguen.
 - **Pegar imágenes** con `<leader>ip` (por ejemplo una captura con `Print`) o arrastrando el archivo: en el vault van a `assets/` como `![[imagen]]`; en otros `.md`, a `assets/` junto al archivo.
-- LSP, formateo y resaltado para Lua (Hyprland), QML (Quickshell), bash/zsh, TypeScript, JSON y Markdown.
+- LSP, formateo y resaltado para Lua (Hyprland), QML (Quickshell), bash/zsh, TypeScript/JavaScript (con ESLint y Prettier), HTML y CSS (con Emmet y Tailwind), Rust, Dart/Flutter (ejecutar, hot reload y dispositivos desde nvim), JSON y Markdown.
 - Splits como el foco de Hyprland en Dvorak: `Ctrl + H/S/N/T` = izquierda/derecha/arriba/abajo. Guardar: `Ctrl + S` en modo insertar o `:w`.
 
 ### Fuente

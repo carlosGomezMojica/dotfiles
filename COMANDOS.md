@@ -168,6 +168,21 @@ Se guardan en `~/Imágenes/Capturas` y se copian al portapapeles. La notificaci�
 
 Las imágenes y los bloques ` ```mermaid ` se dibujan dentro del buffer (kitty), con los colores del tema.
 
+### Lenguajes
+
+| Atajo / comando | Función |
+| --- | --- |
+| `<leader>cf` | Formatear (prettier en web y markdown, `dart format`, `rustfmt`…) |
+| `<leader>uf` / `<leader>uF` | Activar o desactivar el formateo al guardar (global / buffer) |
+| `:EslintFixAll` | Corregir todo lo que ESLint sabe arreglar |
+| Abreviatura Emmet (`div.card>ul>li*3`) | Escribirla y aceptarla en el menú de completado |
+| `<leader>cR` | Acciones de código de Rust (rustaceanvim) |
+| `:RustLsp runnables` / `:RustLsp testables` | Ejecutar binarios / tests de Rust |
+| `<leader>Fr` / `<leader>Fq` | Flutter: ejecutar / parar |
+| `<leader>Fl` / `<leader>FR` | Flutter: hot reload / hot restart |
+| `<leader>Fd` / `<leader>Fe` | Flutter: dispositivos / emuladores |
+| `<leader>Fo` / `<leader>Fc` | Flutter: árbol de widgets / log |
+
 ### Claude Code (code-preview.nvim)
 
 | Comando | Función |
@@ -195,5 +210,9 @@ Las imágenes y los bloques ` ```mermaid ` se dibujan dentro del buffer (kitty),
 | `qs` | Ejecutar Quickshell en una terminal (muestra errores, recarga al guardar) |
 | `pacman -Qqen > packages.txt` / `pacman -Qqem > aur.txt` | Regenerar las listas de paquetes |
 | `sudo pacman -S --needed - < packages.txt` / `yay -S --needed - < aur.txt` | Reinstalar paquetes |
+| `mise use -g <herramienta>@<versión>` | Instalar una versión global con mise (queda en `mise/.config/mise/config.toml`) |
+| `mise use <herramienta>@<versión>` | Fijar la versión en el proyecto actual (`mise.toml`) |
+| `rustup update` / `rustup component add rust-analyzer` | Actualizar Rust / instalar su LSP |
+| `flutter doctor` | Comprobar qué le falta a Flutter (Android SDK, Chrome…) |
 | `systemctl --user enable --now bt-agent` | Agente de bluetooth (emparejar desde el panel) |
 | `loginctl lock-session` | Bloquear la sesión |

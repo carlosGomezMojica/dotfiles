@@ -23,6 +23,11 @@ require("lazy").setup({
     { import = "lazyvim.plugins.extras.lang.typescript" },
     { import = "lazyvim.plugins.extras.lang.json" },
     { import = "lazyvim.plugins.extras.lang.markdown" },
+    { import = "lazyvim.plugins.extras.lang.rust" },
+    { import = "lazyvim.plugins.extras.lang.tailwind" },
+    { import = "lazyvim.plugins.extras.linting.eslint" },
+    { import = "lazyvim.plugins.extras.formatting.prettier" },
+    -- Dart/Flutter va en plugins/flutter.lua con flutter-tools (no lang.dart: los dos arrancarían dartls)
     -- Plugins propios de lua/plugins/
     { import = "plugins" },
   },
