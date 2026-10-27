@@ -7,7 +7,7 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     opts = {
-      ensure_installed = { "bash", "lua", "qmljs", "json", "toml", "markdown", "markdown_inline", "yaml", "html" },
+      ensure_installed = { "bash", "lua", "qmljs", "json", "toml", "markdown", "markdown_inline", "yaml", "html", "mermaid" },
     },
   },
   {

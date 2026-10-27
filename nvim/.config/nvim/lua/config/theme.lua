@@ -45,6 +45,40 @@ function M.highlights()
   end
 end
 
+-- Configuración de mermaid-cli (tema "base") con los tokens de la paleta; devuelve su ruta
+function M.mermaid_config()
+  local p = M.palette() or {}
+  local vars = {
+    darkMode = true,
+    background = p.bg,
+    fontFamily = vim.trim(read(dir .. "/font") or ""),
+    primaryColor = p.surface,
+    primaryTextColor = p.text,
+    primaryBorderColor = p.accent,
+    secondaryColor = p.border_inactive,
+    tertiaryColor = p.bg,
+    lineColor = p.muted,
+    textColor = p.text,
+    mainBkg = p.surface,
+    nodeBorder = p.accent,
+    clusterBkg = p.bg,
+    clusterBorder = p.border_inactive,
+    edgeLabelBackground = p.bg,
+    noteBkgColor = p.surface,
+    noteTextColor = p.text,
+    noteBorderColor = p.warning,
+    actorBkg = p.surface,
+    actorBorder = p.accent,
+    actorTextColor = p.text,
+    signalColor = p.text,
+    signalTextColor = p.text,
+    pie1 = p.error, pie2 = p.warning, pie3 = p.yellow, pie4 = p.success, pie5 = p.aqua, pie6 = p.info,
+  }
+  local path = vim.fn.stdpath("cache") .. "/mermaid-theme.json"
+  vim.fn.writefile({ vim.json.encode({ theme = "base", themeVariables = vars }) }, path)
+  return path
+end
+
 -- mini.base16 con los colores de terminal de la paleta (mismo orden que base16)
 local function base16(name)
   local palette = M.palette(name)

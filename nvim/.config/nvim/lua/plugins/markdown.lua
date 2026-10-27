@@ -18,6 +18,16 @@ return {
       image = {
         enabled = true,
         doc = { inline = true, float = true, max_width = 80, max_height = 30 },
+        -- Bloques ```mermaid con mmdc (mermaid-cli) y los colores de la paleta activa.
+        -- La imagen se cachea por contenido: tras cambiar de tema, solo se recolorea al editar el bloque
+        convert = {
+          mermaid = function()
+            return {
+              "-i", "{src}", "-o", "{file}", "-b", "transparent", "-s", "{scale}",
+              "-c", require("config.theme").mermaid_config(),
+            }
+          end,
+        },
       },
     },
   },
