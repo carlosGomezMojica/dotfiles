@@ -96,6 +96,8 @@ mkdir -p "$(dirname "$zathura_theme")"
 "$HOME/.local/bin/greeter-sync" || true
 # Dolphin y apps KDE/Qt (kdeglobals; se repintan solas)
 "$HOME/.local/bin/kde-colors" || true
+# Zen Browser (userChrome; se aplica al reiniciarlo)
+"$HOME/.local/bin/zen-colors" || true
 
 # Quickshell lo detecta solo (watchChanges); Hyprland necesita recargar
 hyprctl reload >/dev/null

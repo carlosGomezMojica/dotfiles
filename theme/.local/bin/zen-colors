@@ -1,0 +1,97 @@
+#!/usr/bin/env bash
+# Colores del tema activo para Zen Browser (interfaz, no las webs).
+# En cada perfil de ~/.config/zen genera chrome/theme.css con la paleta, se asegura de
+# que chrome/userChrome.css lo importe, activa en user.js los userChrome y deja la ventana
+# siguiendo el esquema claro/oscuro del sistema, que cambia aquí con gsettings (en vivo).
+# Zen no recarga userChrome: los colores de la paleta se aplican al reiniciarlo.
+# Lo llama `theme` al terminar.
+set -euo pipefail
+
+zen="$HOME/.config/zen"
+[[ -f "$zen/profiles.ini" ]] || exit 0
+
+dir="$HOME/.config/theme"
+name="$(cat "$dir/current")"
+palette="$dir/palettes/$name.json"
+[[ -f "$palette" ]] || exit 0
+
+token() { sed -n "s/.*\"$1\" *: *\"\(#[0-9a-fA-F]\{6\}\)\".*/\1/p" "$palette"; }
+
+# Claro u oscuro según la luminancia del fondo (como kde-colors)
+hex="$(token bg)"; hex="${hex#\#}"
+if (( 0x${hex:0:2} * 299 + 0x${hex:2:2} * 587 + 0x${hex:4:2} * 114 < 128000 )); then
+    scheme=dark
+else
+    scheme=light
+fi
+
+# Esquema del sistema: el portal (xdg-desktop-portal-gtk) lo anuncia en vivo y Zen,
+# con zen.view.window.scheme = 2 (automático), pasa a claro/oscuro sin reiniciar
+command -v gsettings >/dev/null && gsettings set org.gnome.desktop.interface color-scheme "prefer-$scheme"
+
+# Variables de Zen (zen-styles/zen-theme.css del omni.ja). Van con !important porque
+# el degradado del espacio de trabajo se escribe como estilo en línea en :root
+css() {
+    cat <<EOF
+/* Generado por zen-colors ($name): no editar */
+:root {
+  color-scheme: $scheme !important;
+  --toolbar-color-scheme: $scheme !important;
+
+  --zen-primary-color: $(token accent) !important;
+  --zen-colors-primary: $(token surface) !important;
+  --zen-colors-secondary: $(token surface) !important;
+  --zen-colors-tertiary: $(token bg) !important;
+  --zen-colors-hover-bg: $(token surface) !important;
+  --zen-colors-primary-foreground: $(token text) !important;
+  --zen-colors-border: $(token border) !important;
+  --zen-colors-border-contrast: $(token border_inactive) !important;
+  --zen-colors-input-bg: $(token surface) !important;
+
+  --zen-main-browser-background: $(token bg) !important;
+  --zen-main-browser-background-toolbar: $(token bg) !important;
+  --zen-themed-toolbar-bg-transparent: $(token bg) !important;
+  --zen-dialog-background: $(token bg) !important;
+  --zen-urlbar-background: $(token bg) !important;
+  --arrowpanel-background: $(token bg) !important;
+  --arrowpanel-color: $(token text) !important;
+  --arrowpanel-border-color: $(token panel_border) !important;
+
+  --toolbox-textcolor: $(token text) !important;
+  --toolbar-field-color: $(token text) !important;
+  --toolbar-field-background-color: $(token surface) !important;
+  --tab-selected-bgcolor: $(token surface) !important;
+  --tab-selected-textcolor: $(token text) !important;
+  --focus-outline-color: $(token accent) !important;
+  --link-color: $(token info) !important;
+}
+EOF
+}
+
+# Perfiles listados en profiles.ini (rutas relativas a ~/.config/zen)
+sed -n 's/^Path=//p' "$zen/profiles.ini" | while IFS= read -r path; do
+    profile="$zen/$path"
+    [[ -d "$profile" ]] || continue
+    mkdir -p "$profile/chrome"
+    css > "$profile/chrome/theme.css"
+
+    userchrome="$profile/chrome/userChrome.css"
+    touch "$userchrome"
+    # @import tiene que ir antes que cualquier otra regla
+    if ! grep -q '@import "theme.css";' "$userchrome"; then
+        { echo '@import "theme.css";'; cat "$userchrome"; } > "$userchrome.tmp"
+        mv "$userchrome.tmp" "$userchrome"
+    fi
+
+    # user.js: se reemplaza solo el bloque entre las marcas (el resto no se toca)
+    userjs="$profile/user.js"
+    touch "$userjs"
+    {
+        sed '/^\/\/ theme: inicio/,/^\/\/ theme: fin/d' "$userjs"
+        echo '// theme: inicio (zen-colors)'
+        echo 'user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);'
+        echo 'user_pref("zen.view.window.scheme", 2);'
+        echo '// theme: fin'
+    } > "$userjs.tmp"
+    mv "$userjs.tmp" "$userjs"
+done
