@@ -1,0 +1,11 @@
+# greetd: inicio de sesión con el greeter de Quickshell sobre un Hyprland mínimo.
+# Lo instala `sudo greeter/install.sh` en /etc/greetd/config.toml.
+
+[terminal]
+vt = 1
+
+[default_session]
+# El usuario "greeter" tiene "/" como home (no escribible): caché, configuración y datos
+# de Hyprland y Quickshell van a su XDG_RUNTIME_DIR (lo crea pam_systemd)
+command = "sh -c 'export XDG_CACHE_HOME=$XDG_RUNTIME_DIR/cache XDG_CONFIG_HOME=$XDG_RUNTIME_DIR/config XDG_DATA_HOME=$XDG_RUNTIME_DIR/data XDG_STATE_HOME=$XDG_RUNTIME_DIR/state; exec start-hyprland -- -c /etc/greetd/hyprland.lua'"
+user = "greeter"

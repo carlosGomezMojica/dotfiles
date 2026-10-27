@@ -9,7 +9,8 @@ import QtQuick
 Singleton {
     id: root
 
-    readonly property string dir: Quickshell.env("HOME") + "/.config/theme"
+    // El greeter (otro usuario, sin acceso al home) lo lee de una copia: QS_THEME_DIR
+    readonly property string dir: Quickshell.env("QS_THEME_DIR") || Quickshell.env("HOME") + "/.config/theme"
     property string name: "catppuccin-mocha"
 
     readonly property color bg: colors.bg

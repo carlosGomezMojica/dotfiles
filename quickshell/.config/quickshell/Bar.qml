@@ -1,4 +1,5 @@
 import Quickshell
+import Quickshell.Wayland
 import QtQuick
 
 PanelWindow {
@@ -66,7 +67,7 @@ PanelWindow {
 		BatteryStrip { anchors.verticalCenter: parent.verticalCenter }
 	}
 
-        // Expandida: robot (IA), puntos de workspaces e icono de batería con porcentaje
+        // Expandida: cafeína, robot (IA), puntos de workspaces e icono de batería con porcentaje
         Row {
             id: content
             anchors.centerIn: parent
@@ -76,6 +77,9 @@ PanelWindow {
             enabled: pill.expanded
             Behavior on opacity { NumberAnimation { duration: 150 } }
 
+            CaffeineButton {
+                anchors.verticalCenter: parent.verticalCenter
+            }
             AiButton {
                 id: aiButton
                 anchors.verticalCenter: parent.verticalCenter
@@ -88,6 +92,12 @@ PanelWindow {
                 onClicked: batteryPanel.toggle()
             }
         }
+    }
+
+    // Cafeína activa: no apagar la pantalla ni suspender por inactividad (hypridle lo respeta)
+    IdleInhibitor {
+        window: bar
+        enabled: Caffeine.active
     }
 
     BatteryPanel {

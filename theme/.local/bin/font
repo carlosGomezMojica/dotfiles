@@ -66,6 +66,8 @@ fi
 
 # satty (editor de capturas) con la fuente nueva
 "$HOME/.local/bin/captura" --satty-config || true
+# Inicio de sesión (greetd): copia de la fuente
+"$HOME/.local/bin/greeter-sync" || true
 
 # Quickshell lo detecta solo (Theme.qml vigila ~/.config/theme/font)
 echo "fuente activa: $font"

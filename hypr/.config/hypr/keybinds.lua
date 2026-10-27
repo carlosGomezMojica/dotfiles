@@ -7,6 +7,7 @@ local terminal = "kitty"
 local fileManager = terminal .. " -e yazi" -- yazi es de terminal: necesita abrirse dentro de kitty
 local menu = "qs ipc call launcher toggle" -- lanzador propio de Quickshell (Launcher.qml)
 local clipboard = "qs ipc call clipboard toggle" -- historial del portapapeles (Clipboard.qml, cliphist)
+local lock = "loginctl lock-session" -- bloqueo (Lock.qml; hypridle lo traduce a `qs ipc call lock lock`)
 local themePicker = "qs ipc call themes toggle" -- selector de tema y wallpaper (ThemePicker.qml)
 local dismissNotifications = "qs ipc call notifications dismissAll" -- cerrar notificaciones (Notifications.qml)
 -- Capturas: hyprshot + notificación con editar (satty) / copiar / carpeta. Ruta completa:
@@ -21,6 +22,7 @@ local screenshot = os.getenv("HOME") .. "/.local/bin/captura"
 local mainMod = "SUPER"
 
 local closeWindowBind = hl.bind(mainMod .. " + Q", hl.dsp.window.close())-- close windows
+hl.bind(mainMod .. " + L", hl.dsp.exec_cmd(lock)) -- bloquear la sesión
 
 hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown || hyprctl dispatch 'hl.dsp.exit()'")) -- kill hyprland
 

@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# Copia el tema, la fuente, el wallpaper y el avatar a /var/lib/quickshell-greeter, donde
+# los lee el inicio de sesión (greetd corre como otro usuario y no puede leer el home).
+# La carpeta la crea una vez `sudo greeter/install.sh`; si no existe, no hace nada.
+# Lo llaman `theme` y `font` al terminar.
+set -euo pipefail
+
+src="$HOME/.config/theme"
+dest="/var/lib/quickshell-greeter"
+[[ -d "$dest" && -w "$dest" ]] || exit 0
+
+mkdir -p "$dest/theme/palettes" "$dest/theme/wallpapers"
+cp -f "$src/current" "$dest/theme/current"
+cp -f "$src/font" "$dest/theme/font" 2>/dev/null || true
+cp -f "$src"/palettes/*.json "$dest/theme/palettes/"
+
+# Wallpaper activo: relativo a wallpapers/ o ruta absoluta
+wall="$(cat "$src/wallpaper" 2>/dev/null || true)"
+[[ -n "$wall" && "$wall" != /* ]] && wall="$src/wallpapers/$wall"
+rm -f "$dest/theme/wallpapers"/actual.*
+if [[ -n "$wall" && -f "$wall" ]]; then
+    name="actual.${wall##*.}"
+    cp -f "$wall" "$dest/theme/wallpapers/$name"
+    echo "$name" > "$dest/theme/wallpaper"
+else
+    : > "$dest/theme/wallpaper"
+fi
+
+# Último usuario y su foto
+echo "$USER" > "$dest/user"
+if [[ -f "$HOME/.face" ]]; then cp -f "$HOME/.face" "$dest/avatar.png"; else rm -f "$dest/avatar.png"; fi
+
+chmod -R a+rX "$dest"

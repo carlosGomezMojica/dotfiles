@@ -188,6 +188,9 @@ hl.config({
     misc = {
         force_default_wallpaper = 0,     -- el wallpaper lo pinta Quickshell (Wallpaper.qml)
         disable_hyprland_logo   = true,  -- sin logo/mascota detrás mientras arranca Quickshell
+        -- Si Quickshell se cierra con la sesión bloqueada, al reiniciarlo puede volver a
+        -- tomar el bloqueo (Lock.qml) en vez de quedarse la pantalla roja de Hyprland
+        allow_session_lock_restore = true,
     },
 })
 

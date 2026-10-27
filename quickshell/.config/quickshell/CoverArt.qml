@@ -9,6 +9,8 @@ Item {
 
     property string source: ""
     property real radius: 12
+    // La imagen cargó (si no, se ve la nota de respaldo)
+    readonly property bool ready: image.status === Image.Ready
 
     layer.enabled: true
     layer.effect: MultiEffect {

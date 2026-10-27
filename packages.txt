@@ -10,9 +10,11 @@ dolphin
 efibootmgr
 git
 github-cli
+greetd
 grim
 gst-plugin-pipewire
 htop
+hypridle
 hyprland
 hyprpolkitagent
 hyprshot

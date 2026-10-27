@@ -15,6 +15,7 @@ Configuración personal de **Arch Linux + Hyprland**, con una shell propia escri
 | `packages.txt` / `aur.txt` | — | Paquetes oficiales y de AUR |
 
 ### Barra (Quickshell)
+- **Cafeína**: a la izquierda del todo de la cápsula expandida, una taza (gris apagada, amarilla activa). Activa, la pantalla no se apaga ni el equipo se suspende por inactividad (normalmente: pantalla apagada a los 10 min y suspensión a los 30, con **hypridle**).
 - **Uso de IA (Claude Code)** a la izquierda de los workspaces: plegada, 5 segmentos naranjas con el uso de la sesión; expandida, un robot con el %. Al pulsarlo, un panel al estilo del de batería con la sesión de 5 h y su reinicio, el uso semanal, los tokens (sesión, hoy y semana) y el próximo reinicio semanal. Los límites salen de la API de uso de Anthropic con la sesión de Claude Code (como en Omarchy) y los tokens de sus registros locales.
 - Cápsula superior que **se auto-oculta**: oculta muestra barritas finas de los 9 workspaces y 10 segmentos de batería; al pasar el ratón se expande con puntos clicables y el icono de pila con el porcentaje.
 - **Panel de batería**: al pulsar la pila se despliega una tarjeta con el nivel en un anillo de puntos, tiempo restante, salud (capacidad real frente a la de diseño), ciclos de carga, consumo y selector de **perfil de energía** (ahorro / equilibrado / rendimiento, vía `power-profiles-daemon`).
@@ -40,6 +41,10 @@ Configuración personal de **Arch Linux + Hyprland**, con una shell propia escri
 - Lista de canciones del álbum (la que suena en aqua): `↑` `↓` o `Ctrl+N` / `Ctrl+T` para moverte, `Enter` o clic para reproducir desde ahí, `Esc` vuelve a los álbumes.
 - Reproduciendo: carátula con reflejo, título, álbum y artista, tiempo (clic para saltar) y anterior / reproducir-pausa / siguiente (también `←` `→` y `Espacio`).
 - Carátulas: `cover.jpg`/`folder.jpg`/`front.jpg` de la carpeta del álbum o la imagen incrustada en el archivo.
+
+### Bloqueo e inicio de sesión
+- **Bloqueo** (`SUPER + L`, a los 10 min de inactividad junto con el apagado de pantalla y antes de suspender): el wallpaper desenfocado, la hora grande sobre cristal con la fecha, tu usuario y la contraseña, batería, red y DVORAK arriba, lo que suena abajo a la izquierda (con controles) y suspender / reiniciar / apagar abajo a la derecha.
+- **Inicio de sesión** con el mismo diseño (greetd + Quickshell), teclado Dvorak y selector de sesión. Sigue el tema, la fuente y el wallpaper que elijas. Instalación: `sudo pacman -S greetd`, `sudo greeter/install.sh` y, tras probar, `sudo greeter/install.sh --enable` (vuelta atrás: `sudo systemctl disable greetd && sudo systemctl enable sddm`).
 
 ### Portapapeles
 - `SUPER + SHIFT + V` abre el historial de todo lo copiado (texto, enlaces e imágenes, vía **cliphist**), con el diseño del lanzador: buscador, lista y vista previa.
@@ -87,6 +92,7 @@ Una sola fuente para todo el escritorio (hoy **JetBrainsMono Nerd Font**): Quick
 | `Print` / `SHIFT + Print` / `CTRL + Print` | Captura de región / ventana / pantalla completa (también `SUPER + SHIFT + P`: región) |
 | `SUPER + E` | Gestor de archivos (yazi en kitty) |
 | `SUPER + Q` | Cerrar ventana |
+| `SUPER + L` | Bloquear la sesión |
 | `SUPER + H / S / N / T` | Foco izquierda / derecha / arriba / abajo |
 | `SUPER + 1…0` | Ir al workspace |
 | `SUPER + SHIFT + 1…0` | Mover ventana al workspace |
@@ -110,7 +116,7 @@ yay -S --needed - < aur.txt
 # Enlaces simbólicos (GNU Stow)
 stow hypr quickshell theme kitty bluetooth
 stow --no-folding mpd          # systemd no lee drop-ins enlazados como directorio
-systemctl --user enable --now mpd mpd-mpris bt-agent
+systemctl --user enable --now mpd mpd-mpris bt-agent hypridle
 ```
 
 - `~/.local/bin` debe estar en el `PATH` para usar el comando `theme`.
