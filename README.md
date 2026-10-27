@@ -10,6 +10,7 @@ Configuración personal de **Arch Linux + Hyprland**, con una shell propia escri
 | `quickshell/` | `~/.config/quickshell` | Barra superior, cápsula de red, indicadores de volumen y brillo, notificaciones, panel de batería, lanzador, fondo de escritorio y selector de tema |
 | `theme/` | `~/.config/theme`, `~/.local/bin` | Paletas de color, wallpapers por tema y script `theme` para cambiarlos |
 | `kitty/` | `~/.config/kitty` | `kitty.conf` (incluye los colores del tema activo) |
+| `zsh/` | `~/.zshrc`, `~/.config/zsh` | zsh con **powerlevel10k**, autosugerencias y resaltado de sintaxis, con los colores del tema |
 | `bluetooth/` | `~/.config/systemd/user` | Servicio `bt-agent` (agente de BlueZ para emparejar desde el panel) |
 | `mpd/` | `~/.config/mpd`, `~/.config/systemd/user` | MPD (biblioteca en `~/Música`) y ajuste del servicio `mpd-mpris` |
 | `packages.txt` / `aur.txt` | — | Paquetes oficiales y de AUR |
@@ -77,6 +78,9 @@ theme gruvbox-dark gruvbox-dark/x.png   # activa un tema con ese wallpaper
 
 Temas incluidos: **Catppuccin Mocha** y **Gruvbox Dark**.
 
+### Terminal (zsh + powerlevel10k)
+zsh con el prompt **powerlevel10k** en el estilo que elijas con `p10k configure` (lean, classic, rainbow…), pero con los colores del tema: directorio en el color de acento, git en verde / naranja / azul / rojo (limpio / modificado / sin seguimiento / conflicto), errores en rojo y duración en amarillo. Las sugerencias del historial (`→` para aceptar) y el resaltado de la línea de comandos también siguen el tema. Al cambiar de tema, las terminales abiertas cambian en el siguiente prompt.
+
 ### Fuente
 Una sola fuente para todo el escritorio (hoy **JetBrainsMono Nerd Font**): Quickshell, kitty, apps GTK y Qt/KDE, y la fuente por defecto de fontconfig (sans, serif y mono) que usan el navegador y el resto. Para cambiarla, escribe **`/font`** en el lanzador (`SUPER + A`): salen las fuentes instaladas, cada una con su tipografía; `Enter` la aplica. Desde la terminal: `font` (lista) y `font "<familia>"`. Para crear uno, copia un `.json` de `palettes/`, cambia los hex y crea su carpeta en `wallpapers/`.
 
@@ -114,9 +118,10 @@ sudo pacman -S --needed - < packages.txt
 yay -S --needed - < aur.txt
 
 # Enlaces simbólicos (GNU Stow)
-stow hypr quickshell theme kitty bluetooth
+stow hypr quickshell theme kitty bluetooth zsh
 stow --no-folding mpd          # systemd no lee drop-ins enlazados como directorio
 systemctl --user enable --now mpd mpd-mpris bt-agent hypridle
+chsh -s /usr/bin/zsh           # zsh por defecto; luego, en una terminal nueva: p10k configure
 ```
 
 - `~/.local/bin` debe estar en el `PATH` para usar el comando `theme`.
