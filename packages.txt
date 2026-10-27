@@ -10,6 +10,7 @@ btrfs-progs
 cliphist
 dolphin
 efibootmgr
+fd
 fzf
 git
 github-cli
@@ -59,6 +60,7 @@ smartmontools
 snapper
 stow
 sudo
+tree-sitter-cli
 ttf-cascadia-code-nerd
 ttf-firacode-nerd
 ttf-jetbrains-mono-nerd

@@ -10,6 +10,7 @@ Configuración personal de **Arch Linux + Hyprland**, con una shell propia escri
 | `quickshell/` | `~/.config/quickshell` | Barra superior, cápsula de red, indicadores de volumen y brillo, notificaciones, panel de batería, lanzador, fondo de escritorio y selector de tema |
 | `theme/` | `~/.config/theme`, `~/.local/bin` | Paletas de color, wallpapers por tema y script `theme` para cambiarlos |
 | `kitty/` | `~/.config/kitty` | `kitty.conf` (incluye los colores del tema activo) |
+| `nvim/` | `~/.config/nvim` | Neovim con **LazyVim**, los colores del tema (cambian en caliente) y LSP para Lua, QML, shell y web |
 | `lazygit/` | `~/.config/lazygit` | lazygit con iconos Nerd y los colores ANSI de la terminal (siguen al tema) |
 | `qt/` | `~/.config/environment.d` | `QT_QPA_PLATFORMTHEME=kde`: Dolphin y apps Qt/KDE con los colores del tema |
 | `yazi/` | `~/.config/yazi` | yazi: los PDF se abren con zathura |
@@ -92,6 +93,13 @@ zsh con el prompt **powerlevel10k** en el estilo que elijas con `p10k configure`
 - `cat` → **bat** (resaltado y números, colores de la terminal), `n` → **nvim**, `lg` → **lazygit** (revisar, hacer commit y subir; sus colores también siguen al tema).
 - **extract** (plugin de oh-my-zsh): `extract archivo` o `x archivo` descomprime zip, tar.gz, tar.xz, zst, 7z, rar… en una carpeta con su nombre (`-r` borra el original).
 - **zoxide**: `z <parte del nombre>` salta a la carpeta más visitada que coincida; `zi` la elige de una lista con fzf.
+
+### Editor (Neovim + LazyVim)
+- Base **LazyVim** (`n` en la terminal); la primera vez instala solo los plugins, parsers y servidores de lenguaje.
+- Colores del tema activo (catppuccin, gruvbox; un tema nuevo sale con su paleta): al cambiar de tema, los nvim abiertos cambian al momento.
+- Portapapeles compartido con el sistema: `y` copia al del escritorio (aparece en el historial de `SUPER + SHIFT + V`) y `p` pega lo copiado en cualquier app.
+- LSP, formateo y resaltado para Lua (Hyprland), QML (Quickshell), bash/zsh, TypeScript, JSON y Markdown.
+- Splits como el foco de Hyprland en Dvorak: `Ctrl + H/S/N/T` = izquierda/derecha/arriba/abajo. Guardar: `Ctrl + S` en modo insertar o `:w`.
 
 ### Fuente
 Una sola fuente para todo el escritorio (hoy **JetBrainsMono Nerd Font**): Quickshell, kitty, apps GTK y Qt/KDE, y la fuente por defecto de fontconfig (sans, serif y mono) que usan el navegador y el resto. Para cambiarla, escribe **`/font`** en el lanzador (`SUPER + A`): salen las fuentes instaladas, cada una con su tipografía; `Enter` la aplica. Desde la terminal: `font` (lista) y `font "<familia>"`. Para crear uno, copia un `.json` de `palettes/`, cambia los hex y crea su carpeta en `wallpapers/`.
