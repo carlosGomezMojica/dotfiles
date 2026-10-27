@@ -1,0 +1,12 @@
+# yazi: los PDF se abren con zathura (Enter), además de las reglas por defecto
+
+[opener]
+# orphan: zathura sigue abierto aunque se cierre yazi
+pdf = [
+	{ run = "zathura %s", desc = "Zathura", for = "linux", orphan = true },
+]
+
+[open]
+prepend_rules = [
+	{ mime = "application/pdf", use = [ "pdf", "reveal" ] },
+]

@@ -1,0 +1,14 @@
+# zathura: visor de PDF (lo usa yazi y es la app por defecto para application/pdf)
+
+# Colores del tema activo; los genera el script `theme` (no está en el repo)
+include theme
+
+set selection-clipboard clipboard
+set adjust-open         width
+set scroll-page-aware   true
+set smooth-scroll       true
+set statusbar-h-padding 8
+set statusbar-v-padding 4
+set page-padding        4
+# Ctrl+R: páginas con los colores del tema (modo oscuro)
+set recolor-keephue     true

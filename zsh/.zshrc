@@ -14,6 +14,8 @@ SAVEHIST=10000
 setopt share_history hist_ignore_all_dups hist_ignore_space hist_reduce_blanks
 
 # Autocompletado (menú con flechas, sin distinguir mayúsculas)
+# _extract: completado del plugin extract (zsh-extract-git, AUR)
+fpath+=(/usr/share/zsh/plugins/zsh-extract)
 autoload -Uz compinit
 compinit -d ~/.cache/zsh/zcompdump
 zstyle ':completion:*' menu select
@@ -43,5 +45,7 @@ source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
 
 # Plugins (syntax-highlighting siempre el último)
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+# extract (de oh-my-zsh): `extract archivo` (o `x`) descomprime casi cualquier formato
+[[ -f /usr/share/zsh/plugins/zsh-extract/extract.plugin.zsh ]] && source /usr/share/zsh/plugins/zsh-extract/extract.plugin.zsh
 source ~/.config/zsh/theme.zsh
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

@@ -1,0 +1,91 @@
+#!/usr/bin/env bash
+# Colores del tema activo para Dolphin y el resto de apps KDE/Qt (platform theme `kde`,
+# de plasma-integration, con QT_QPA_PLATFORMTHEME=kde en ~/.config/environment.d).
+# Genera el esquema ~/.local/share/color-schemes/Theme.colors, lo copia a kdeglobals
+# (lo que hace Plasma al aplicar un esquema) y avisa por D-Bus para que las ventanas
+# abiertas se repinten. Lo llama `theme` al terminar.
+set -euo pipefail
+
+command -v kwriteconfig6 >/dev/null || exit 0
+
+dir="$HOME/.config/theme"
+palette="$dir/palettes/$(cat "$dir/current").json"
+[[ -f "$palette" ]] || exit 0
+
+# Token de la paleta en el formato de KDE: "r,g,b"
+token() { sed -n "s/.*\"$1\" *: *\"\(#[0-9a-fA-F]\{6\}\)\".*/\1/p" "$palette"; }
+rgb() {
+    local hex; hex="$(token "$1")"; hex="${hex#\#}"
+    printf '%d,%d,%d' "0x${hex:0:2}" "0x${hex:2:2}" "0x${hex:4:2}"
+}
+
+bg="$(rgb bg)" border="$(rgb border)" surface="$(rgb surface)" alt="$(rgb border_inactive)"
+text="$(rgb text)" muted="$(rgb muted)" accent="$(rgb accent)" info="$(rgb info)"
+error="$(rgb error)" warning="$(rgb warning)" success="$(rgb success)"
+
+# Iconos claros u oscuros según la luminancia del fondo
+IFS=, read -r r g b <<< "$bg"
+(( r * 299 + g * 587 + b * 114 < 128000 )) && icons=breeze-dark || icons=breeze
+
+# Grupo de colores: fondo, fondo alternativo, texto
+group() {
+    cat <<EOF
+[Colors:$1]
+BackgroundNormal=$2
+BackgroundAlternate=$3
+ForegroundNormal=$4
+ForegroundInactive=$muted
+ForegroundActive=$accent
+ForegroundLink=$info
+ForegroundVisited=$accent
+ForegroundNegative=$error
+ForegroundNeutral=$warning
+ForegroundPositive=$success
+DecorationFocus=$accent
+DecorationHover=$accent
+
+EOF
+}
+
+scheme="$HOME/.local/share/color-schemes/Theme.colors"
+mkdir -p "$(dirname "$scheme")"
+{
+    echo "# Generado por kde-colors ($(cat "$dir/current")): no editar"
+    echo "[General]"
+    echo "Name=Theme"
+    echo "ColorScheme=Theme"
+    echo
+    group Window "$bg" "$border" "$text"
+    group View "$bg" "$border" "$text"
+    group Button "$surface" "$alt" "$text"
+    group Selection "$accent" "$accent" "$bg"
+    group Tooltip "$surface" "$border" "$text"
+    group Header "$bg" "$border" "$text"
+    group Complementary "$bg" "$border" "$text"
+    cat <<EOF
+[WM]
+activeBackground=$bg
+activeForeground=$text
+activeBlend=$text
+inactiveBackground=$bg
+inactiveForeground=$muted
+inactiveBlend=$muted
+EOF
+} > "$scheme"
+
+# Copia a kdeglobals: se quitan sus grupos [Colors:*] y [WM] y se añaden los del esquema
+# (el resto, como las fuentes que escribe `font`, no se toca)
+globals="$HOME/.config/kdeglobals"
+touch "$globals"
+{
+    awk '/^\[/ { skip = ($0 ~ /^\[(Colors:.*|WM)\]$/) } !skip && NF' "$globals"
+    echo
+    awk '/^\[/ { skip = ($0 == "[General]") } !skip && !/^#/' "$scheme"
+} > "$globals.tmp"
+mv "$globals.tmp" "$globals"
+kwriteconfig6 --file kdeglobals --group General --key ColorScheme Theme
+kwriteconfig6 --file kdeglobals --group KDE --key widgetStyle Breeze
+kwriteconfig6 --file kdeglobals --group Icons --key Theme "$icons"
+
+# Las apps abiertas recargan la paleta (0 = PaletteChanged), como con plasma-apply-colorscheme
+dbus-send --session --type=signal /KGlobalSettings org.kde.KGlobalSettings.notifyChange int32:0 int32:0 || true

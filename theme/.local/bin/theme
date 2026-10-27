@@ -57,10 +57,45 @@ mkdir -p "$(dirname "$kitty_theme")"
 # SIGUSR1 hace que kitty recargue su configuración
 pkill -USR1 -x kitty || true
 
+# zathura (visor de PDF): incluido desde zathurarc; se aplica al abrir el siguiente PDF
+zathura_theme="$HOME/.config/zathura/theme"
+mkdir -p "$(dirname "$zathura_theme")"
+{
+    echo "# Generado por \`theme $name\`: no editar"
+    echo "set default-bg              \"$(token bg)\""
+    echo "set default-fg              \"$(token text)\""
+    echo "set statusbar-bg            \"$(token surface)\""
+    echo "set statusbar-fg            \"$(token text)\""
+    echo "set inputbar-bg             \"$(token bg)\""
+    echo "set inputbar-fg             \"$(token text)\""
+    echo "set notification-bg         \"$(token surface)\""
+    echo "set notification-fg         \"$(token text)\""
+    echo "set notification-error-bg   \"$(token error)\""
+    echo "set notification-error-fg   \"$(token bg)\""
+    echo "set notification-warning-bg \"$(token warning)\""
+    echo "set notification-warning-fg \"$(token bg)\""
+    echo "set completion-bg           \"$(token surface)\""
+    echo "set completion-fg           \"$(token text)\""
+    echo "set completion-group-bg     \"$(token bg)\""
+    echo "set completion-group-fg     \"$(token muted)\""
+    echo "set completion-highlight-bg \"$(token accent)\""
+    echo "set completion-highlight-fg \"$(token bg)\""
+    echo "set index-bg                \"$(token bg)\""
+    echo "set index-fg                \"$(token text)\""
+    echo "set index-active-bg         \"$(token accent)\""
+    echo "set index-active-fg         \"$(token bg)\""
+    echo "set highlight-color         \"$(token yellow)\""
+    echo "set highlight-active-color  \"$(token accent)\""
+    echo "set recolor-lightcolor      \"$(token bg)\""
+    echo "set recolor-darkcolor       \"$(token text)\""
+} > "$zathura_theme"
+
 # satty (editor de capturas) con los colores nuevos
 "$HOME/.local/bin/captura" --satty-config || true
 # Inicio de sesión (greetd): copia del tema y el wallpaper
 "$HOME/.local/bin/greeter-sync" || true
+# Dolphin y apps KDE/Qt (kdeglobals; se repintan solas)
+"$HOME/.local/bin/kde-colors" || true
 
 # Quickshell lo detecta solo (watchChanges); Hyprland necesita recargar
 hyprctl reload >/dev/null

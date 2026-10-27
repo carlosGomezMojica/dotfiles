@@ -66,6 +66,10 @@ end)
 
 hl.env("XCURSOR_SIZE", "24")
 hl.env("HYPRCURSOR_SIZE", "24")
+-- Apps Qt/KDE (Dolphin…) con los colores del tema (kdeglobals, script kde-colors). También
+-- está en ~/.config/environment.d/qt.conf, pero lo que lanza Hyprland (Quickshell y, desde su
+-- lanzador, las apps) hereda el entorno de Hyprland, no el de systemd
+hl.env("QT_QPA_PLATFORMTHEME", "kde")
 
 
 -----------------------

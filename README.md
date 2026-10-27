@@ -11,6 +11,9 @@ Configuración personal de **Arch Linux + Hyprland**, con una shell propia escri
 | `theme/` | `~/.config/theme`, `~/.local/bin` | Paletas de color, wallpapers por tema y script `theme` para cambiarlos |
 | `kitty/` | `~/.config/kitty` | `kitty.conf` (incluye los colores del tema activo) |
 | `lazygit/` | `~/.config/lazygit` | lazygit con iconos Nerd y los colores ANSI de la terminal (siguen al tema) |
+| `qt/` | `~/.config/environment.d` | `QT_QPA_PLATFORMTHEME=kde`: Dolphin y apps Qt/KDE con los colores del tema |
+| `yazi/` | `~/.config/yazi` | yazi: los PDF se abren con zathura |
+| `zathura/` | `~/.config/zathura` | zathura (visor de PDF) con los colores del tema |
 | `zsh/` | `~/.zshrc`, `~/.config/zsh` | zsh con **powerlevel10k**, autosugerencias y resaltado de sintaxis, con los colores del tema |
 | `bluetooth/` | `~/.config/systemd/user` | Servicio `bt-agent` (agente de BlueZ para emparejar desde el panel) |
 | `mpd/` | `~/.config/mpd`, `~/.config/systemd/user` | MPD (biblioteca en `~/Música`) y ajuste del servicio `mpd-mpris` |
@@ -77,12 +80,17 @@ theme gruvbox-dark                      # activa un tema con su primer wallpaper
 theme gruvbox-dark gruvbox-dark/x.png   # activa un tema con ese wallpaper
 ```
 
+**Dolphin** y el resto de apps KDE/Qt también siguen el tema (colores, estilo Breeze e iconos), y se repintan solas al cambiarlo.
+
+Los PDF se abren con **zathura** (desde yazi, Dolphin o el navegador) con los colores del tema; `Ctrl+R` pinta también las páginas con ellos.
+
 Temas incluidos: **Catppuccin Mocha** y **Gruvbox Dark**.
 
 ### Terminal (zsh + powerlevel10k)
 zsh con el prompt **powerlevel10k** en el estilo que elijas con `p10k configure` (lean, classic, rainbow…), pero con los colores del tema: directorio en el color de acento, git en verde / naranja / azul / rojo (limpio / modificado / sin seguimiento / conflicto), errores en rojo y duración en amarillo. Las sugerencias del historial (`→` para aceptar) y el resaltado de la línea de comandos también siguen el tema. Al cambiar de tema, las terminales abiertas cambian en el siguiente prompt.
 
 - `cat` → **bat** (resaltado y números, colores de la terminal), `n` → **nvim**, `lg` → **lazygit** (revisar, hacer commit y subir; sus colores también siguen al tema).
+- **extract** (plugin de oh-my-zsh): `extract archivo` o `x archivo` descomprime zip, tar.gz, tar.xz, zst, 7z, rar… en una carpeta con su nombre (`-r` borra el original).
 - **zoxide**: `z <parte del nombre>` salta a la carpeta más visitada que coincida; `zi` la elige de una lista con fzf.
 
 ### Fuente
@@ -122,7 +130,8 @@ sudo pacman -S --needed - < packages.txt
 yay -S --needed - < aur.txt
 
 # Enlaces simbólicos (GNU Stow)
-stow hypr quickshell theme kitty bluetooth zsh lazygit
+mkdir -p ~/.config/zathura      # directorio real: el tema genera ahí sus colores
+stow hypr quickshell theme kitty bluetooth zsh lazygit qt yazi zathura
 stow --no-folding mpd          # systemd no lee drop-ins enlazados como directorio
 systemctl --user enable --now mpd mpd-mpris bt-agent hypridle
 chsh -s /usr/bin/zsh           # zsh por defecto; luego, en una terminal nueva: p10k configure
