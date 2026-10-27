@@ -101,6 +101,9 @@ zsh con el prompt **powerlevel10k** en el estilo que elijas con `p10k configure`
 - Portapapeles compartido con el sistema: `y` copia al del escritorio (aparece en el historial de `SUPER + SHIFT + V`) y `p` pega lo copiado en cualquier app.
 - **oil.nvim**: `-` (o `nvim <carpeta>`) abre el directorio como un buffer, con los archivos ocultos visibles (`g.` los oculta); renombrar, mover o borrar es editar las líneas y guardar.
 - **code-preview.nvim**: con Claude Code en otra terminal, cada edición que propone se abre en nvim como diff antes de aceptarla. Se activa por proyecto con `:CodePreviewInstallClaudeCodeHooks` en su raíz (y reiniciando Claude Code); `<leader>dq` cierra el diff.
+- **Markdown** renderizado en el propio buffer (títulos, listas, tablas, casillas; `<leader>um` lo alterna) y vista previa en el navegador con `<leader>cp`. Las imágenes se ven dentro de nvim (kitty).
+- **Notas de Obsidian** en `~/Documentos/notas` (se puede abrir también con la app): `<leader>on` nueva nota, `<leader>oo` buscar, `<leader>os` buscar texto, `<leader>ot` nota de hoy (en `diario/`), `<leader>ob` backlinks, `<leader>og` etiquetas, `<leader>oc` casilla; `[[` autocompleta enlaces y `Enter` / `gf` los siguen.
+- **Pegar imágenes** con `<leader>ip` (por ejemplo una captura con `Print`) o arrastrando el archivo: en el vault van a `assets/` como `![[imagen]]`; en otros `.md`, a `assets/` junto al archivo.
 - LSP, formateo y resaltado para Lua (Hyprland), QML (Quickshell), bash/zsh, TypeScript, JSON y Markdown.
 - Splits como el foco de Hyprland en Dvorak: `Ctrl + H/S/N/T` = izquierda/derecha/arriba/abajo. Guardar: `Ctrl + S` en modo insertar o `:w`.
 

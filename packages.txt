@@ -22,6 +22,7 @@ hypridle
 hyprland
 hyprpolkitagent
 hyprshot
+imagemagick
 intel-media-driver
 intel-ucode
 kitty
@@ -41,8 +42,8 @@ mpd
 mpd-mpris
 nano
 neovim
-network-manager-applet
 networkmanager
+network-manager-applet
 pipewire
 pipewire-alsa
 pipewire-jack
