@@ -56,6 +56,12 @@ mkdir -p "$(dirname "$kitty_theme")"
 } > "$kitty_theme"
 # SIGUSR1 hace que kitty recargue su configuración
 pkill -USR1 -x kitty || true
+# herdr (tema "terminal") vuelve a leer los colores de kitty con SIGWINCH; solo los
+# clientes, no `herdr server`, y con margen para que kitty haya recargado
+for pid in $(pgrep -x herdr); do
+    [[ "$(tr '\0' ' ' < "/proc/$pid/cmdline")" == *" server "* ]] && continue
+    (sleep 0.5; kill -WINCH "$pid" 2>/dev/null) &
+done
 
 # zathura (visor de PDF): incluido desde zathurarc; se aplica al abrir el siguiente PDF
 zathura_theme="$HOME/.config/zathura/theme"

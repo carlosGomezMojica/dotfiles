@@ -1,0 +1,22 @@
+onboarding = false
+
+[ui]
+status_indicators = "symbols"
+
+# Colores de kitty, que sigue a la paleta activa (el script `theme` avisa con SIGWINCH)
+[theme]
+name = "terminal"
+
+[ui.toast]
+delivery = "off"
+
+# Atajos directos (sin prefijo) además de los de ctrl+b
+[keys]
+switch_tab = ["prefix+1..9", "alt+1..9"]
+previous_workspace = "alt+up"
+next_workspace = "alt+down"
+# Foco entre paneles como el de Hyprland (Dvorak: izq/der/arriba/abajo)
+focus_pane_left = ["prefix+h", "alt+h"]
+focus_pane_right = ["prefix+l", "alt+s"]
+focus_pane_up = ["prefix+k", "alt+n"]
+focus_pane_down = ["prefix+j", "alt+t"]

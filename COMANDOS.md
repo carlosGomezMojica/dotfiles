@@ -113,6 +113,16 @@ Se guardan en `~/Imágenes/Capturas` y se copian al portapapeles. La notificaci�
 | `zi` | Elegir carpeta con fzf |
 | `extract <archivo>` / `x <archivo>` | Descomprimir cualquier formato (`-r` borra el original) |
 
+## herdr (agentes en la terminal)
+
+Prefijo `Ctrl + B`; estos atajos funcionan sin él.
+
+| Atajo | Función |
+| --- | --- |
+| `Alt + 1…9` | Ir a la pestaña 1…9 (también `Ctrl + B` y `1…9`) |
+| `Alt + ↑` / `Alt + ↓` | Espacio de trabajo anterior / siguiente |
+| `Alt + H/S/N/T` | Foco al panel de la izquierda / derecha / arriba / abajo (también `Ctrl + B` y `h/l/k/j`) |
+
 ## Neovim
 
 `<leader>` es `Espacio`. Pulsar `<leader>` y esperar muestra todos los atajos (which-key). Aquí están los propios y los más útiles de LazyVim.
