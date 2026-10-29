@@ -38,8 +38,14 @@ if command -v bat >/dev/null; then
     export BAT_THEME=ansi
     alias cat='bat --paging=never'
 fi
+# lsd en lugar de ls: iconos (Nerd Font) y colores; sin él queda el ls de arriba.
+command -v lsd >/dev/null && alias ls='lsd'
 
-command -v mise >/dev/null && eval "$(mise activate zsh)"
+if command -v mise >/dev/null; then
+    eval "$(mise activate zsh)"
+    # Claude Code siempre con node 24, aunque el proyecto fije otra versión en su mise.toml
+    alias claude='mise exec node@24 -- claude'
+fi
 # zoxide: `z carpeta` salta a la más visitada que coincida; `zi` la elige con fzf
 command -v zoxide >/dev/null && eval "$(zoxide init zsh)"
 
@@ -53,3 +59,10 @@ source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 [[ -f /usr/share/zsh/plugins/zsh-extract/extract.plugin.zsh ]] && source /usr/share/zsh/plugins/zsh-extract/extract.plugin.zsh
 source ~/.config/zsh/theme.zsh
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# Autocompletado de Angular CLI, solo si `ng` responde con la versión de node activa
+# (el shim de mise falla y ensucia el instant prompt si no está en esa versión)
+if command -v ng >/dev/null && ng_completion=$(ng completion script 2>/dev/null); then
+    source <(print -r -- "$ng_completion")
+fi
+unset ng_completion

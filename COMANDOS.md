@@ -119,6 +119,7 @@ La cápsula de abajo a la izquierda (símbolo de apagado) muestra al pasar el ra
 | `git flow release start\|finish <versión>` | Preparar una versión desde `develop` / fusionarla en `main` y `develop` con etiqueta |
 | `git flow hotfix start\|finish <versión>` | Arreglo urgente desde `main` / fusionarlo en `main` y `develop` con etiqueta |
 | `cat` | bat (con resaltado) |
+| `ls` | lsd (con iconos y colores) |
 | `z <nombre>` | Saltar a la carpeta más visitada que coincida (zoxide) |
 | `zi` | Elegir carpeta con fzf |
 | `extract <archivo>` / `x <archivo>` | Descomprimir cualquier formato (`-r` borra el original) |
