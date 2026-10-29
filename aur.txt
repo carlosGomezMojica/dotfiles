@@ -1,6 +1,9 @@
+gitflow-cjs
 herdr-bin
+limine-mkinitcpio-hook
+limine-snapper-sync
+localsend-bin
 yay-bin
-yay-bin-debug
 zen-browser-bin
-zsh-theme-powerlevel10k-git
 zsh-extract-git
+zsh-theme-powerlevel10k-git

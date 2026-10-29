@@ -110,6 +110,11 @@ La cápsula de abajo a la izquierda (símbolo de apagado) muestra al pasar el ra
 | --- | --- |
 | `n` | Neovim |
 | `lg` | lazygit |
+| `claude` | Claude Code con node 24 (`mise exec node@24 -- claude`), aunque el proyecto fije otra versión de node |
+| `git flow init -d` | Preparar git-flow en el repo con los nombres por defecto (`main`/`develop`, `feature/`, `release/`, `hotfix/`) |
+| `git flow feature start\|finish <nombre>` | Abrir una rama de funcionalidad desde `develop` / fusionarla en `develop` |
+| `git flow release start\|finish <versión>` | Preparar una versión desde `develop` / fusionarla en `main` y `develop` con etiqueta |
+| `git flow hotfix start\|finish <versión>` | Arreglo urgente desde `main` / fusionarlo en `main` y `develop` con etiqueta |
 | `cat` | bat (con resaltado) |
 | `z <nombre>` | Saltar a la carpeta más visitada que coincida (zoxide) |
 | `zi` | Elegir carpeta con fzf |
