@@ -30,6 +30,27 @@ return {
   },
   {
     "folke/snacks.nvim",
+    init = function()
+      -- snacks.image arranca con BufReadPre, que no salta al abrir un archivo nuevo (`nvim nota.md`
+      -- sin existir, o `:e` de uno nuevo): sin esto esa sesión no pinta imágenes.
+      -- Va en init, y no en autocmds.lua (VeryLazy), para llegar a tiempo al archivo de la línea de órdenes
+      vim.api.nvim_create_autocmd("BufNewFile", {
+        group = vim.api.nvim_create_augroup("snacks_image_newfile", { clear = true }),
+        callback = function(e)
+          if not Snacks.config.image.enabled then
+            return
+          end
+          Snacks.image.setup()
+          -- El FileType de este buffer ya pasó, así que lo enganchamos a mano
+          vim.schedule(function()
+            local lang = vim.treesitter.language.get_lang(vim.bo[e.buf].filetype)
+            if vim.api.nvim_buf_is_valid(e.buf) and vim.tbl_contains(Snacks.image.langs(), lang) then
+              Snacks.image.doc.attach(e.buf)
+            end
+          end)
+        end,
+      })
+    end,
     opts = {
       -- Pinta en el buffer las imágenes de ![](...) y ![[...]] con el protocolo gráfico de kitty;
       -- jpg, webp, gif… se convierten a png con imagemagick
