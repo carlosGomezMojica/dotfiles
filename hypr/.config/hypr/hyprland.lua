@@ -292,6 +292,17 @@ hl.window_rule({
     center = true,
 })
 
+-- LocalSend (enviar/recibir archivos en la red local): flotante y centrado,
+-- con un tamaño acorde a su interfaz de móvil
+hl.window_rule({
+    name  = "localsend-float",
+    match = { class = "org.localsend.localsend_app" },
+
+    float  = true,
+    size   = "monitor_w*0.45 monitor_h*0.7",
+    center = true,
+})
+
 -- Hyprland-run windowrule
 hl.window_rule({
     name  = "move-hyprland-run",
