@@ -64,6 +64,8 @@ Se guardan en `~/Imágenes/Capturas` y se copian al portapapeles. La notificaci�
 
 ## Quickshell (barra y paneles)
 
+La cápsula de abajo a la izquierda (símbolo de apagado) muestra al pasar el ratón **bloquear, cerrar sesión, suspender, hibernar, reiniciar y apagar**; todas salvo bloquear piden un segundo clic para confirmar.
+
 ### Teclas dentro de los paneles
 
 | Panel | Teclas |

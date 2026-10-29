@@ -11,6 +11,7 @@ ShellRoot {
 			Bar { modelData: perScreen.modelData }
 			NetworkBar { modelData: perScreen.modelData }
 			IndicatorBar { modelData: perScreen.modelData }
+			PowerBar { modelData: perScreen.modelData }
 		}
 	}
 
