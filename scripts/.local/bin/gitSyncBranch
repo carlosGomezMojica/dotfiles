@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+# Crea en local todas las ramas del remoto (GitHub u otro) con el mismo nombre y siguiéndolas.
+#   gitSyncBranch                 trae las ramas de origin y crea las que falten
+#   gitSyncBranch -u              además avanza (solo fast-forward) las que ya existen
+#   gitSyncBranch -n              en seco: muestra qué haría sin tocar nada
+#   gitSyncBranch -r <remoto>     otro remoto (por defecto origin)
+set -euo pipefail
+
+remote=origin update=no dry=no
+usage() { sed -n '2,6s/^# \{0,1\}//p' "$0"; }
+while getopts ':r:unh' opt; do
+    case $opt in
+        r) remote="$OPTARG" ;;
+        u) update=yes ;;
+        n) dry=yes ;;
+        h) usage; exit 0 ;;
+        *) usage >&2; exit 1 ;;
+    esac
+done
+
+git rev-parse --git-dir >/dev/null 2>&1 || { echo "gitSyncBranch: no estás en un repositorio git" >&2; exit 1; }
+git remote get-url "$remote" >/dev/null 2>&1 || { echo "gitSyncBranch: no existe el remoto '$remote'" >&2; exit 1; }
+
+echo "Trayendo ramas de $remote ($(git remote get-url "$remote"))…"
+git fetch --prune "$remote"
+
+current="$(git symbolic-ref --quiet --short HEAD || true)"
+# Ramas abiertas en otros worktrees: moverlas dejaría su árbol de trabajo desfasado
+others="$(git worktree list --porcelain | sed -n 's|^branch refs/heads/||p' | grep -vxF "$current" || true)"
+created=0 updated=0 skipped=0
+
+while IFS= read -r ref; do
+    branch="${ref#refs/remotes/"$remote"/}"
+    [[ "$branch" == HEAD ]] && continue
+
+    if ! git show-ref --verify --quiet "refs/heads/$branch"; then
+        echo "  + $branch"
+        [[ $dry == yes ]] || git branch --quiet --track "$branch" "$ref"
+        created=$((created + 1))
+        continue
+    fi
+
+    [[ $update == yes ]] || continue
+    local_sha="$(git rev-parse "refs/heads/$branch")" remote_sha="$(git rev-parse "$ref")"
+    [[ "$local_sha" == "$remote_sha" ]] && continue
+    if ! git merge-base --is-ancestor "$local_sha" "$remote_sha"; then
+        echo "  ! $branch: ha divergido de $ref, no se toca"
+        skipped=$((skipped + 1))
+    elif grep -qxF "$branch" <<<"$others"; then
+        echo "  ! $branch: abierta en otro worktree, actualízala allí"
+        skipped=$((skipped + 1))
+    elif [[ "$branch" == "$current" ]]; then
+        # La rama actual se avanza con merge para actualizar también el árbol de trabajo
+        echo "  ↑ $branch (actual)"
+        [[ $dry == yes ]] || git merge --quiet --ff-only "$ref"
+        updated=$((updated + 1))
+    else
+        echo "  ↑ $branch"
+        [[ $dry == yes ]] || git update-ref "refs/heads/$branch" "$remote_sha" "$local_sha"
+        updated=$((updated + 1))
+    fi
+done < <(git for-each-ref --format='%(refname)' "refs/remotes/$remote/")
+
+[[ $dry == yes ]] && echo "(en seco: no se ha cambiado nada)"
+echo "Creadas: $created · Actualizadas: $updated · Sin tocar: $skipped"

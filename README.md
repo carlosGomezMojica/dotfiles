@@ -16,6 +16,7 @@ Configuración personal de **Arch Linux + Hyprland**, con una shell propia escri
 | `qt/` | `~/.config/environment.d` | `QT_QPA_PLATFORMTHEME=kde`: Dolphin y apps Qt/KDE con los colores del tema |
 | `yazi/` | `~/.config/yazi` | yazi: los PDF se abren con zathura |
 | `zathura/` | `~/.config/zathura` | zathura (visor de PDF) con los colores del tema |
+| `scripts/` | `~/.local/bin` | Scripts de automatización (`gitSyncBranch`: crea en local las ramas del remoto) |
 | `zsh/` | `~/.zshrc`, `~/.config/zsh` | zsh con **powerlevel10k**, autosugerencias y resaltado de sintaxis, con los colores del tema |
 | `bluetooth/` | `~/.config/systemd/user` | Servicio `bt-agent` (agente de BlueZ para emparejar desde el panel) |
 | `mpd/` | `~/.config/mpd`, `~/.config/systemd/user` | MPD (biblioteca en `~/Música`) y ajuste del servicio `mpd-mpris` |
@@ -155,7 +156,7 @@ systemctl --user enable --now mpd mpd-mpris bt-agent hypridle
 chsh -s /usr/bin/zsh           # zsh por defecto; luego, en una terminal nueva: p10k configure
 ```
 
-- `~/.local/bin` debe estar en el `PATH` para usar el comando `theme`.
+- `~/.local/bin` debe estar en el `PATH` para usar `theme` y los demás scripts (`.zshrc` lo añade).
 - Fuentes usadas: JetBrainsMono, CaskaydiaCove y FiraCode **Nerd Font** (incluidas en `packages.txt`).
 - Quickshell lo arranca Hyprland al iniciar (`uwsm app -- quickshell`).
 - Quickshell es el servidor de notificaciones: si hay otro instalado (dunst, mako…), desactívalo, p. ej. `systemctl --user mask dunst`.

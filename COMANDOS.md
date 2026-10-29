@@ -102,6 +102,9 @@ La cápsula de abajo a la izquierda (símbolo de apagado) muestra al pasar el ra
 | `captura region\|window\|output` | Captura de pantalla con notificación |
 | `captura --satty-config` | Regenerar la config de satty con el tema |
 | `kde-colors` | Regenerar los colores de las apps KDE/Qt (lo llama `theme`) |
+| `gitSyncBranch [-r remoto]` | Traer las ramas del remoto (origin) y crear en local las que falten, con el mismo nombre y siguiéndolas |
+| `gitSyncBranch -u` | Además avanzar (solo fast-forward) las ramas locales que vayan por detrás; las divergentes no se tocan |
+| `gitSyncBranch -n` | En seco: mostrar qué haría |
 | `greeter-sync` | Copiar tema, fuente y wallpaper a la pantalla de inicio (lo llaman `theme` y `font`) |
 
 ## Terminal (zsh)

@@ -6,6 +6,10 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
     source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# Scripts propios (theme, font, gitSyncBranch…) en el PATH, sin duplicar al recargar
+typeset -U path
+path=(~/.local/bin $path)
+
 # Historial compartido entre terminales y sin duplicados
 mkdir -p ~/.cache/zsh
 HISTFILE=~/.cache/zsh/history
