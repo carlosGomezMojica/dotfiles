@@ -21,6 +21,7 @@ Configuración personal de **Arch Linux + Hyprland**, con una shell propia escri
 | `bluetooth/` | `~/.config/systemd/user` | Servicio `bt-agent` (agente de BlueZ para emparejar desde el panel) |
 | `mpd/` | `~/.config/mpd`, `~/.config/systemd/user` | MPD (biblioteca en `~/Música`) y ajuste del servicio `mpd-mpris` |
 | `packages.txt` / `aur.txt` | — | Paquetes oficiales y de AUR |
+| `install.sh`, `system/` | — | Instalación completa y configuración del sistema (snap-pac, Limine); no son paquetes de stow |
 
 ### Barra (Quickshell)
 - **Cafeína**: a la izquierda del todo de la cápsula expandida, una taza (gris apagada, amarilla activa). Activa, la pantalla no se apaga ni el equipo se suspende por inactividad (normalmente: pantalla apagada a los 10 min y suspensión a los 30, con **hypridle**).
@@ -141,25 +142,40 @@ La lista completa de atajos y comandos (Hyprland, Quickshell, scripts, zsh y Neo
 
 ## Instalación
 
+Sobre un Arch recién instalado (mejor con `/` en btrfs y Limine, como el de archinstall):
+
 ```sh
 git clone <repo> ~/dotfiles && cd ~/dotfiles
+./install.sh
+```
 
-# Paquetes
-sudo pacman -S --needed - < packages.txt
-yay -S --needed - < aur.txt
+`install.sh` (como usuario; pide sudo) se puede repetir sin romper nada. En orden:
 
-# Enlaces simbólicos (GNU Stow)
-mkdir -p ~/.config/zathura      # directorio real: el tema genera ahí sus colores
-stow hypr quickshell theme kitty bluetooth zsh lazygit qt yazi zathura
-stow --no-folding mpd          # systemd no lee drop-ins enlazados como directorio
-systemctl --user enable --now mpd mpd-mpris bt-agent hypridle
-chsh -s /usr/bin/zsh           # zsh por defecto; luego, en una terminal nueva: p10k configure
+1. Snapshot de `/` antes de empezar (si snapper ya está configurado).
+2. Paquetes de `packages.txt` (pacman) y de `aur.txt` (instala `yay` si falta).
+3. Copias de seguridad: configs `root` y `home` de snapper, **snap-pac** y los snapshots en el menú de Limine (ver abajo; esa parte pide confirmación).
+4. Enlaces con `stow` de todos los paquetes (primero en seco: si un archivo real estorba, avisa y no toca nada).
+5. Servicios (NetworkManager, bluetooth, perfiles de energía; de usuario: pipewire, hypridle, MPD, `bt-agent`…), zsh por defecto, zathura para PDF, `mise install`, Rust y los plugins de Neovim.
+6. Tema y fuente activos (`theme`, `font`) y el inicio de sesión con greetd (`greeter/install.sh --enable`).
+
+Al terminar, reinicia. Si `theme` o `font` avisaron (fuera de Hyprland no pueden recargarlo), ejecútalos de nuevo ya dentro de la sesión.
+
+## Copias de seguridad (snapshots)
+
+- Cada transacción de pacman o yay (actualizar, instalar, quitar) crea con **snap-pac** un par de snapshots de `/`: `pre` (antes) y `post` (después). `/home` no entra ahí: tiene sus snapshots horarios de snapper. Los antiguos se borran solos (`snapper-cleanup`, máximo 50).
+- Los snapshots de `/` salen en el menú de arranque de **Limine**, en el submenú *Snapshots* (`limine-snapper-sync`): si una actualización rompe el sistema, se arranca desde el `pre` y se restaura con `limine-snapper-restore`. El script que lo prepara es `system/limine-snapshots.sh`; guarda el `limine.conf` original como `limine.conf.orig` y explica al principio cómo volver atrás.
+
+```sh
+snapper -c root list                        # snapshots de /
+snapper -c root status 41..42               # qué cambió entre dos snapshots
+sudo snapper -c root undochange 41..42      # deshacer esos cambios
+sudo limine-snapper-restore                 # restaurar un snapshot entero (también arrancado desde él)
 ```
 
 - `~/.local/bin` debe estar en el `PATH` para usar `theme` y los demás scripts (`.zshrc` lo añade).
 - Fuentes usadas: JetBrainsMono, CaskaydiaCove y FiraCode **Nerd Font** (incluidas en `packages.txt`).
 - Quickshell lo arranca Hyprland al iniciar (`uwsm app -- quickshell`).
-- Quickshell es el servidor de notificaciones: si hay otro instalado (dunst, mako…), desactívalo, p. ej. `systemctl --user mask dunst`.
+- Quickshell es el servidor de notificaciones: `install.sh` enmascara dunst; si hay otro (mako…), desactívalo igual.
 
 ## Recargar
 

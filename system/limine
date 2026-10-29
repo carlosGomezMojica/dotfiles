@@ -1,0 +1,21 @@
+# /etc/default/limine (lo instala system/limine-snapshots.sh desde el repo: no editar allí)
+# Lo leen limine-entry-tool (limine-mkinitcpio-hook) y limine-snapper-sync.
+
+# --- limine-entry-tool: entradas de cada kernel instalado en $ESP_PATH/limine.conf ---
+ESP_PATH="/boot"
+# La línea de comandos del kernel sale de /etc/kernel/cmdline (no se repite aquí)
+ENABLE_UKI=no
+# Limine también en EFI/BOOT/BOOTX64.EFI, por si una actualización de la BIOS borra la entrada UEFI
+ENABLE_LIMINE_FALLBACK=yes
+# Solo Linux en este equipo: sin buscar otros cargadores (el BOOTX64.EFI sería el propio Limine)
+FIND_BOOTLOADERS=no
+BOOT_ORDER="*, *fallback, Snapshots"
+ENABLE_SORT=no
+
+# --- limine-snapper-sync: submenú "Snapshots" con los de la config root de snapper ---
+SNAPPER_CONFIG_NAME="root"
+# ESP de 1 GiB: tantas entradas como quepan; por encima del 85 % se quitan las más antiguas
+MAX_SNAPSHOT_ENTRIES=auto
+LIMIT_USAGE_PERCENT=85
+# El "post" de snap-pac es el sistema ya actualizado: para volver atrás sirve el "pre"
+EXCLUDE_SNAPSHOT_TYPES="post"

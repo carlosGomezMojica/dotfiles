@@ -230,6 +230,11 @@ Las imágenes y los bloques ` ```mermaid ` se dibujan dentro del buffer (kitty),
 
 | Comando | Función |
 | --- | --- |
+| `./install.sh` | Instalar todo en un Arch nuevo (paquetes, stow, servicios, snapshots, tema, greetd); re-ejecutable |
+| `system/limine-snapshots.sh` | Preparar los snapshots en el menú de Limine (lo llama `install.sh`) |
+| `snapper -c root list` | Ver los snapshots de `/` (snap-pac crea un `pre`/`post` en cada pacman o yay) |
+| `snapper -c root status A..B` / `sudo snapper -c root undochange A..B` | Ver / deshacer los cambios entre dos snapshots |
+| `sudo limine-snapper-restore` | Restaurar un snapshot entero (también tras arrancar desde él en Limine) |
 | `cd ~/dotfiles && stow <paquete>` | Enlazar un paquete |
 | `stow -R <paquete>` / `stow -D <paquete>` | Re-enlazar / quitar enlaces |
 | `hyprctl reload` / `hyprctl configerrors` | Recargar Hyprland / ver errores |
